@@ -15,4 +15,5 @@ public class OtherClass {
     private String coucou;
     private int number;
     private SubClass aClass;
+    private SubClass twoClass;
 }

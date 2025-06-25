@@ -2,6 +2,7 @@ package com.mehrunessky.mothermaker.generators;
 
 import com.mehrunessky.mothermaker.utils.GetFields;
 import com.squareup.javapoet.ClassName;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 
@@ -13,6 +14,7 @@ import java.util.function.Function;
 @RequiredArgsConstructor(staticName = "of")
 public class TypeElementWrapper {
     @Delegate
+    @Getter
     private final TypeElement typeElement;
 
     public ClassName getClassName() {

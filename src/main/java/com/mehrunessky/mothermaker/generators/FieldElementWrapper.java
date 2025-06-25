@@ -15,4 +15,8 @@ public class FieldElementWrapper {
     public TypeElementWrapper getTypeElementWrapper() {
         return TypeElementWrapper.of((TypeElement) ((DeclaredType) element.asType()).asElement());
     }
+
+    public String getFieldName() {
+        return element.getSimpleName().toString();
+    }
 }

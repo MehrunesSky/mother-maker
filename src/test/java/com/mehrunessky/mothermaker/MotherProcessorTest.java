@@ -23,6 +23,7 @@ class MotherProcessorTest {
                     .isEqualTo(new OtherClass(
                                     "coucou",
                                     0,
+                                    new SubClass("field", "field2"),
                                     new SubClass("field", "field2")
                             )
                     );
@@ -40,6 +41,7 @@ class MotherProcessorTest {
                     .isEqualTo(new OtherClass(
                                     "otherCoucou",
                                     2,
+                                    new SubClass("field", "field2"),
                                     new SubClass("field", "field2")
                             )
                     );
@@ -59,7 +61,8 @@ class MotherProcessorTest {
                     .isEqualTo(new OtherClass(
                                     "otherCoucou",
                                     2,
-                                    new SubClass("car", "otherValue")
+                                    new SubClass("car", "otherValue"),
+                                    new SubClass("field", "field2")
                             )
                     );
         }
