@@ -18,8 +18,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @SupportedAnnotationTypes("com.mehrunessky.mothermaker.Mother")
@@ -29,12 +27,10 @@ public class MotherProcessor extends AbstractProcessor {
     private static final Generator CLASSIC_GENERATOR = new ClassicGenerator();
     private static final Generator LOMBOK_GENERATOR = new LombokBuilderGenerator();
 
-    private List<String> classNames = new ArrayList<>();
-
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element element : roundEnv.getElementsAnnotatedWith(Mother.class)) {
-            if (element.getKind() == ElementKind.CLASS) {
+            if (element.getKind() == ElementKind.CLASS || element.getKind() == ElementKind.RECORD) {
                 TypeElement typeElement = (TypeElement) element;
                 if (typeElement.getAnnotation(Builder.class) != null) {
                     generateMotherClass(processingEnv, LOMBOK_GENERATOR, typeElement);
