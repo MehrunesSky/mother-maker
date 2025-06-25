@@ -6,16 +6,18 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.SOURCE)
 public @interface Mother {
 
-    boolean abstractMother() default false;
-
     @Target(ElementType.TYPE)
-    @Retention(RetentionPolicy.RUNTIME)
+    @Retention(RetentionPolicy.SOURCE)
     public @interface Field {
-        boolean ignore() default false;
 
         String defaultValue() default "";
+    }
+
+    @Target({ElementType.FIELD})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Ignore {
     }
 }

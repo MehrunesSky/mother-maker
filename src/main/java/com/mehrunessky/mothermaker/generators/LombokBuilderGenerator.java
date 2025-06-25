@@ -23,7 +23,6 @@ public class LombokBuilderGenerator implements Generator {
     @Override
     public TypeSpec generate(ProcessingEnvironment processingEnv, TypeElement typeElement) {
         TypeElementWrapper typeElementWrapper = TypeElementWrapper.of(typeElement);
-
         var classBuilder = TypeSpec.classBuilder(typeElementWrapper.getMotherClassName())
                 .addAnnotation(AnnotationSpec
                         .builder(ClassName.get(Generated.class))

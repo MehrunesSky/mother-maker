@@ -1,5 +1,6 @@
 package com.mehrunessky.mothermaker.utils;
 
+import com.mehrunessky.mothermaker.Mother;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,10 @@ public class GetFields {
         return element.getKind() == ElementKind.FIELD;
     }
 
+    private static boolean hasNoMotherIgnored(Element element) {
+        return element.getAnnotation(Mother.Ignore.class) == null;
+    }
+
     private boolean classContainSetter(Element field) {
         var setterName = "set" + capitalize(field.getSimpleName().toString());
         return ClassElementUtils.classContainSetter(typeElement, setterName);
@@ -60,6 +65,7 @@ public class GetFields {
                 .map(Element.class::cast)
                 .filter(GetFields::isField)
                 .filter(GetFields::isPrivate)
+                .filter(GetFields::hasNoMotherIgnored)
                 .filter(e -> !onlyWithSetter || classContainSetter(e))
                 .filter(e -> !onlySubClasses || fieldIsComplexeClass(e))
                 .filter(e -> !withoutSubClasses || !fieldIsComplexeClass(e))
