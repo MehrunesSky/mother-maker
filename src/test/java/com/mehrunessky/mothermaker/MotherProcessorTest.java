@@ -2,6 +2,8 @@ package com.mehrunessky.mothermaker;
 
 import com.mehrunessky.mothermaker.clazzs.OtherClass;
 import com.mehrunessky.mothermaker.clazzs.OtherClassMother;
+import com.mehrunessky.mothermaker.clazzs.RecordClass;
+import com.mehrunessky.mothermaker.clazzs.RecordClassMother;
 import com.mehrunessky.mothermaker.clazzs.SubClass;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,67 +19,90 @@ class MotherProcessorTest {
     @Nested
     class Lombok {
 
-        @Test
-        void basic() {
-            var otherClass = OtherClassMother
-                    .create()
-                    .build();
+        @Nested
+        class clazz {
+            @Test
+            void basic() {
+                var otherClass = OtherClassMother
+                        .create()
+                        .build();
 
-            assertThat(otherClass)
-                    .isEqualTo(new OtherClass(
-                                    "coucou",
-                                    0,
-                                    List.of(),
-                                    Set.of(),
-                                    Map.of(),
-                                    new SubClass("field", "field2"),
-                                    new SubClass("field", "field2")
-                            )
-                    );
+                assertThat(otherClass)
+                        .isEqualTo(new OtherClass(
+                                        "coucou",
+                                        0,
+                                        List.of(),
+                                        Set.of(),
+                                        Map.of(),
+                                        new SubClass("field", "field2"),
+                                        new SubClass("field", "field2")
+                                )
+                        );
+            }
+
+            @Test
+            void change() {
+                var otherClass = OtherClassMother
+                        .create()
+                        .withCoucou("otherCoucou")
+                        .withNumber(2)
+                        .build();
+
+                assertThat(otherClass)
+                        .isEqualTo(new OtherClass(
+                                        "otherCoucou",
+                                        2,
+                                        List.of(),
+                                        Set.of(),
+                                        Map.of(),
+                                        new SubClass("field", "field2"),
+                                        new SubClass("field", "field2")
+                                )
+                        );
+            }
+
+            @Test
+            void changeSubClass() {
+                var otherClass = OtherClassMother
+                        .create()
+                        .withCoucou("otherCoucou")
+                        .withNumber(2)
+                        .withAClass(s -> s.withField("car"))
+                        .withAClass(s -> s.withField2("otherValue"))
+                        .build();
+
+                assertThat(otherClass)
+                        .isEqualTo(new OtherClass(
+                                        "otherCoucou",
+                                        2,
+                                        List.of(),
+                                        Set.of(),
+                                        Map.of(),
+                                        new SubClass("car", "otherValue"),
+                                        new SubClass("field", "field2")
+                                )
+                        );
+            }
         }
 
-        @Test
-        void change() {
-            var otherClass = OtherClassMother
-                    .create()
-                    .withCoucou("otherCoucou")
-                    .withNumber(2)
-                    .build();
+        @Nested
+        class recordd {
 
-            assertThat(otherClass)
-                    .isEqualTo(new OtherClass(
-                                    "otherCoucou",
-                                    2,
-                                    List.of(),
-                                    Set.of(),
-                                    Map.of(),
-                                    new SubClass("field", "field2"),
-                                    new SubClass("field", "field2")
-                            )
-                    );
-        }
+            @Test
+            void basic() {
+                var recordClass = RecordClassMother.create().build();
+                assertThat(recordClass).isEqualTo(new RecordClass("name", 0));
+            }
 
-        @Test
-        void changeSubClass() {
-            var otherClass = OtherClassMother
-                    .create()
-                    .withCoucou("otherCoucou")
-                    .withNumber(2)
-                    .withAClass(s -> s.withField("car"))
-                    .withAClass(s -> s.withField2("otherValue"))
-                    .build();
-
-            assertThat(otherClass)
-                    .isEqualTo(new OtherClass(
-                                    "otherCoucou",
-                                    2,
-                                    List.of(),
-                                    Set.of(),
-                                    Map.of(),
-                                    new SubClass("car", "otherValue"),
-                                    new SubClass("field", "field2")
-                            )
-                    );
+            @Test
+            void change() {
+                var recordClass = RecordClassMother
+                        .create()
+                        .withName("MyNAME")
+                        .withAge(3)
+                        .build();
+                assertThat(recordClass).isEqualTo(new RecordClass("MyNAME", 3));
+            }
         }
     }
 }

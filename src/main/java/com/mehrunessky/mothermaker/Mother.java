@@ -9,4 +9,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Mother {
 
+    boolean abstractMother() default false;
+
+    @Target(ElementType.TYPE)
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Field {
+        boolean ignore() default false;
+
+        String defaultValue() default "";
+    }
 }
