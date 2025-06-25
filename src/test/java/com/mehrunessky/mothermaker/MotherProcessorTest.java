@@ -6,6 +6,10 @@ import com.mehrunessky.mothermaker.clazzs.SubClass;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MotherProcessorTest {
@@ -23,6 +27,9 @@ class MotherProcessorTest {
                     .isEqualTo(new OtherClass(
                                     "coucou",
                                     0,
+                                    List.of(),
+                                    Set.of(),
+                                    Map.of(),
                                     new SubClass("field", "field2"),
                                     new SubClass("field", "field2")
                             )
@@ -41,6 +48,9 @@ class MotherProcessorTest {
                     .isEqualTo(new OtherClass(
                                     "otherCoucou",
                                     2,
+                                    List.of(),
+                                    Set.of(),
+                                    Map.of(),
                                     new SubClass("field", "field2"),
                                     new SubClass("field", "field2")
                             )
@@ -61,6 +71,9 @@ class MotherProcessorTest {
                     .isEqualTo(new OtherClass(
                                     "otherCoucou",
                                     2,
+                                    List.of(),
+                                    Set.of(),
+                                    Map.of(),
                                     new SubClass("car", "otherValue"),
                                     new SubClass("field", "field2")
                             )

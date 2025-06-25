@@ -6,6 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -14,6 +18,9 @@ import lombok.NoArgsConstructor;
 public class OtherClass {
     private String coucou;
     private int number;
+    private List<String> list;
+    private Set<String> set;
+    private Map<String, String> map;
     private SubClass aClass;
     private SubClass twoClass;
 }

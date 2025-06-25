@@ -3,6 +3,7 @@ package com.mehrunessky.mothermaker.datagenerator;
 import com.mehrunessky.mothermaker.utils.StringUtils;
 import lombok.experimental.UtilityClass;
 
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import java.util.Optional;
 
@@ -19,8 +20,11 @@ public class DataGenerator {
             case BYTE -> Optional.of((byte) 0);
             case BOOLEAN -> Optional.of(false);
             case DECLARED -> Optional.ofNullable(
-                    switch (typeMirror.toString()) {
+                    switch (((DeclaredType) typeMirror).asElement().toString()) {
                         case "java.lang.String" -> StringUtils.addDoubleQuotes(name);
+                        case "java.util.List" -> "new java.util.ArrayList<>()";
+                        case "java.util.Set" -> "new java.util.HashSet<>()";
+                        case "java.util.Map" -> "new java.util.HashMap<>()";
                         default -> null;
                     }
             );
