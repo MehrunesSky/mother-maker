@@ -1,5 +1,6 @@
 package com.mehrunessky.mothermaker;
 
+import com.mehrunessky.mothermaker.clazzs.EnumClass;
 import com.mehrunessky.mothermaker.clazzs.OtherClass;
 import com.mehrunessky.mothermaker.clazzs.OtherClassMother;
 import com.mehrunessky.mothermaker.clazzs.RecordClass;
@@ -35,7 +36,8 @@ class MotherProcessorTest {
                                         Set.of(),
                                         Map.of(),
                                         new SubClass("field", "field2"),
-                                        new SubClass("field", "field2")
+                                        new SubClass("field", "field2"),
+                                        EnumClass.VALUE1
                                 )
                         );
             }
@@ -46,6 +48,7 @@ class MotherProcessorTest {
                         .create()
                         .withCoucou("otherCoucou")
                         .withNumber(2)
+                        .withEnumClass(EnumClass.VALUE2)
                         .build();
 
                 assertThat(otherClass)
@@ -56,7 +59,8 @@ class MotherProcessorTest {
                                         Set.of(),
                                         Map.of(),
                                         new SubClass("field", "field2"),
-                                        new SubClass("field", "field2")
+                                        new SubClass("field", "field2"),
+                                        EnumClass.VALUE2
                                 )
                         );
             }
@@ -79,7 +83,8 @@ class MotherProcessorTest {
                                         Set.of(),
                                         Map.of(),
                                         new SubClass("car", "otherValue"),
-                                        new SubClass("field", "field2")
+                                        new SubClass("field", "field2"),
+                                        EnumClass.VALUE1
                                 )
                         );
             }

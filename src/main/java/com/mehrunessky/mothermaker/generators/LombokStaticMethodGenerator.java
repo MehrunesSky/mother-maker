@@ -9,6 +9,7 @@ import com.squareup.javapoet.MethodSpec;
 import lombok.experimental.UtilityClass;
 
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -35,12 +36,21 @@ public class LombokStaticMethodGenerator {
                 .add("return new $T($T\n    .builder()\n", typeElementWrapper.getMotherClassName(), typeElementWrapper.getClassName());
         for (Element enclosedElement : GetFields.of(typeElementWrapper.getTypeElement()).getFields()) {
             if (ElementUtils.fieldIsComplexeClass(enclosedElement)) {
-                var c = ClassName.get((TypeElement) ((DeclaredType) enclosedElement.asType()).asElement());
-                codeBlockBuilder
-                        .add("    .$N($T.create().build())\n",
-                                enclosedElement.getSimpleName().toString(),
-                                ClassName.get(c.packageName(), c.simpleName() + "Mother")
-                        );
+                Element element = ((DeclaredType) enclosedElement.asType()).asElement();
+                var c = ClassName.get((TypeElement) element);
+                if (element.getKind() == ElementKind.ENUM) {
+                    codeBlockBuilder
+                            .add("    .$N($T.values()[0])\n",
+                                    enclosedElement.getSimpleName().toString(),
+                                    c
+                            );
+                } else {
+                    codeBlockBuilder
+                            .add("    .$N($T.create().build())\n",
+                                    enclosedElement.getSimpleName().toString(),
+                                    ClassName.get(c.packageName(), c.simpleName() + "Mother")
+                            );
+                }
                 continue;
             }
             codeBlockBuilder

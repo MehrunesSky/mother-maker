@@ -23,4 +23,5 @@ public class OtherClass {
     private Map<String, String> map;
     private SubClass aClass;
     private SubClass twoClass;
+    private EnumClass enumClass;
 }

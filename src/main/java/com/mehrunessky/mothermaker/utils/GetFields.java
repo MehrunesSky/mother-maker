@@ -13,6 +13,7 @@ import javax.lang.model.element.TypeElement;
 import java.util.List;
 
 import static com.mehrunessky.mothermaker.utils.ElementUtils.fieldIsComplexeClass;
+import static com.mehrunessky.mothermaker.utils.ElementUtils.fieldIsEnum;
 import static com.mehrunessky.mothermaker.utils.StringUtils.capitalize;
 
 @Builder
@@ -67,8 +68,8 @@ public class GetFields {
                 .filter(GetFields::isPrivate)
                 .filter(GetFields::hasNoMotherIgnored)
                 .filter(e -> !onlyWithSetter || classContainSetter(e))
-                .filter(e -> !onlySubClasses || fieldIsComplexeClass(e))
-                .filter(e -> !withoutSubClasses || !fieldIsComplexeClass(e))
+                .filter(e -> !onlySubClasses || (fieldIsComplexeClass(e) && !fieldIsEnum(e)))
+                .filter(e -> !withoutSubClasses || (!fieldIsComplexeClass(e) || fieldIsEnum(e)))
                 .toList();
     }
 }
