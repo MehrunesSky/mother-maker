@@ -1,6 +1,6 @@
 package com.mehrunessky.mothermaker.generators;
 
-import com.mehrunessky.mothermaker.datagenerator.DataGenerator;
+import com.mehrunessky.mothermaker.datagenerator.DataProvider;
 import com.mehrunessky.mothermaker.utils.ElementUtils;
 import com.mehrunessky.mothermaker.utils.GetFields;
 import com.squareup.javapoet.ClassName;
@@ -53,14 +53,14 @@ public class LombokStaticMethodGenerator {
                 }
                 continue;
             }
-            codeBlockBuilder
-                    .add("    .$N($L)\n",
+            var data = DataProvider.getData(
+                    FieldElementWrapper.of(enclosedElement)
+            );
+            data.ifPresent(tuple -> codeBlockBuilder
+                    .add(tuple.statement(),
                             enclosedElement.getSimpleName().toString(),
-                            DataGenerator.getData(
-                                    enclosedElement.asType(),
-                                    enclosedElement.getSimpleName().toString()
-                            ).orElse(null)
-                    );
+                            tuple.object()
+                    ));
         }
 
         var jsp = typeElementWrapper

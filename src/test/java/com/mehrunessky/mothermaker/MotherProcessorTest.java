@@ -30,7 +30,7 @@ class MotherProcessorTest {
 
                 assertThat(otherClass)
                         .isEqualTo(new OtherClass(
-                                        "coucou",
+                                        "aString",
                                         0,
                                         List.of(),
                                         Set.of(),
@@ -46,7 +46,7 @@ class MotherProcessorTest {
             void change() {
                 var otherClass = OtherClassMother
                         .create()
-                        .withCoucou("otherCoucou")
+                        .withAString("otherCoucou")
                         .withNumber(2)
                         .withEnumClass(EnumClass.VALUE2)
                         .build();
@@ -69,7 +69,7 @@ class MotherProcessorTest {
             void changeSubClass() {
                 var otherClass = OtherClassMother
                         .create()
-                        .withCoucou("otherCoucou")
+                        .withAString("otherCoucou")
                         .withNumber(2)
                         .withAClass(s -> s.withField("car"))
                         .withAClass(s -> s.withField2("otherValue"))

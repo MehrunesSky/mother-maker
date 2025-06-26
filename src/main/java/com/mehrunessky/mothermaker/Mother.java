@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface Mother {
 
-    @Target(ElementType.TYPE)
+    @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Field {
+    public @interface Default {
 
-        String defaultValue() default "";
+        String value();
     }
 
     @Target({ElementType.FIELD})

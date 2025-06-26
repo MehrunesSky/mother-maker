@@ -16,7 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Mother
 public class OtherClass {
-    private String coucou;
+
+    @Mother.Default("hello")
+    private String aString;
     private int number;
     private List<String> list;
     private Set<String> set;
