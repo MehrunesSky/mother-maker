@@ -1,9 +1,13 @@
 package com.mehrunessky.mothermaker.datagenerator;
 
 import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
+import com.squareup.javapoet.ClassName;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -15,12 +19,19 @@ public class CollectionGenerator implements GetData {
 
     @Override
     public Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
-        return Optional.empty();
+        return Optional.ofNullable(
+                switch (fieldElementWrapper.getTypeElementWrapper().getTypeElement().toString()) {
+                    case "java.util.List" -> Tuple.of(DEFAULT_STATEMENT, ClassName.get(ArrayList.class));
+                    case "java.util.Set" -> Tuple.of(DEFAULT_STATEMENT, ClassName.get(HashSet.class));
+                    case "java.util.Map" -> Tuple.of(DEFAULT_STATEMENT, ClassName.get(HashMap.class));
+                    default -> null;
+                }
+        );
     }
 
     @Override
     public boolean test(FieldElementWrapper fieldElementWrapper) {
-        return false;
+        return fieldElementWrapper.isCollectionType();
     }
 
     @Override

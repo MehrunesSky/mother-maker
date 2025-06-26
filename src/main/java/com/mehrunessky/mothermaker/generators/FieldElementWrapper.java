@@ -9,6 +9,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor(staticName = "of")
 public class FieldElementWrapper {
@@ -40,5 +41,11 @@ public class FieldElementWrapper {
     public boolean isStringType() {
         return isDeclaredType() && "java.lang.String"
                 .equals(this.getTypeElementWrapper().getTypeElement().toString());
+    }
+
+    public boolean isCollectionType() {
+        return isDeclaredType() &&
+                Set.of("java.util.List", "java.util.Set", "java.util.Map")
+                        .contains(this.getTypeElementWrapper().getTypeElement().toString());
     }
 }

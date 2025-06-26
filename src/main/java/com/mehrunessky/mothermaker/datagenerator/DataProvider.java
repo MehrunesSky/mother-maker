@@ -3,18 +3,23 @@ package com.mehrunessky.mothermaker.datagenerator;
 import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
 import lombok.experimental.UtilityClass;
 
+import java.util.List;
 import java.util.Optional;
 
 @UtilityClass
 public class DataProvider {
 
+    private static final List<GetData> GENERATORS = List.of(
+            CollectionGenerator.INSTANCE,
+            CollectionGenerator.INSTANCE,
+            StringGenerator.INSTANCE
+    );
+
     public static Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
-        if (StringGenerator.INSTANCE.test(fieldElementWrapper)) {
-            return StringGenerator.INSTANCE.getData(fieldElementWrapper);
-        }
-        if (DataGenerator.INSTANCE.test(fieldElementWrapper)) {
-            return DataGenerator.INSTANCE.getData(fieldElementWrapper);
-        }
-        return Optional.empty();
+        return GENERATORS
+                .stream()
+                .filter(g -> g.test(fieldElementWrapper))
+                .flatMap(g -> g.getData(fieldElementWrapper).stream())
+                .findFirst();
     }
 }
