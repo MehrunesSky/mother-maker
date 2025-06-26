@@ -4,7 +4,7 @@ import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
 
 import java.util.Optional;
 
-public sealed interface GetData permits DataGenerator {
+public interface GetData {
 
     Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper);
 

@@ -30,8 +30,8 @@ class MotherProcessorTest {
 
                 assertThat(otherClass)
                         .isEqualTo(new OtherClass(
-                                        "aString",
-                                        0,
+                                        "hello",
+                                        10,
                                         List.of(),
                                         Set.of(),
                                         Map.of(),

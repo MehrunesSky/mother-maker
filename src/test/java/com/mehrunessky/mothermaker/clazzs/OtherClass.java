@@ -19,7 +19,10 @@ public class OtherClass {
 
     @Mother.Default("hello")
     private String aString;
+
+    @Mother.Default("10")
     private int number;
+
     private List<String> list;
     private Set<String> set;
     private Map<String, String> map;

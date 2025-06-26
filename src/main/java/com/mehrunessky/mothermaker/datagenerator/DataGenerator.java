@@ -1,7 +1,6 @@
 package com.mehrunessky.mothermaker.datagenerator;
 
 import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
-import com.mehrunessky.mothermaker.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -30,6 +29,9 @@ public final class DataGenerator implements GetData {
     }
 
     public Optional<Tuple> getData(FieldElementWrapper typeElementWrapper) {
+        if (typeElementWrapper.hasDefaultValue()) {
+            return getTupleWithDefaultStatement(typeElementWrapper.getDefaultValue());
+        }
         return switch (typeElementWrapper.asType().getKind()) {
             case INT, SHORT -> getTupleWithDefaultStatement(0);
             case LONG -> getTupleWithDefaultStatement(0L);
@@ -40,10 +42,6 @@ public final class DataGenerator implements GetData {
             case BOOLEAN -> getTupleWithDefaultStatement(false);
             case DECLARED -> Optional.ofNullable(
                     switch (((DeclaredType) typeElementWrapper.asType()).asElement().toString()) {
-                        case "java.lang.String" -> Tuple.of(
-                                DEFAULT_STATEMENT,
-                                StringUtils.addDoubleQuotes(typeElementWrapper.getFieldName())
-                        );
                         case "java.util.List" -> Tuple.of(DEFAULT_STATEMENT, "new java.util.ArrayList<>()");
                         case "java.util.Set" -> Tuple.of(DEFAULT_STATEMENT, "new java.util.HashSet<>()");
                         case "java.util.Map" -> Tuple.of(DEFAULT_STATEMENT, "new java.util.HashMap<>()");

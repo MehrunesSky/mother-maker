@@ -9,6 +9,9 @@ import java.util.Optional;
 public class DataProvider {
 
     public static Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
+        if (StringGenerator.INSTANCE.test(fieldElementWrapper)) {
+            return StringGenerator.INSTANCE.getData(fieldElementWrapper);
+        }
         if (DataGenerator.INSTANCE.test(fieldElementWrapper)) {
             return DataGenerator.INSTANCE.getData(fieldElementWrapper);
         }
