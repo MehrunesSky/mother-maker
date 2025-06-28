@@ -29,4 +29,6 @@ public class OtherClass {
     private SubClass aClass;
     private SubClass twoClass;
     private EnumClass enumClass;
+    @Mother.Default("VALUE2")
+    private EnumClass enum2;
 }

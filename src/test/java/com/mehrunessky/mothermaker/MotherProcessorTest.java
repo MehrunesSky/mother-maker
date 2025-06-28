@@ -37,7 +37,8 @@ class MotherProcessorTest {
                                         Map.of(),
                                         new SubClass("field", "field2"),
                                         new SubClass("field", "field2"),
-                                        EnumClass.VALUE1
+                                        EnumClass.VALUE1,
+                                        EnumClass.VALUE2
                                 )
                         );
             }
@@ -60,6 +61,7 @@ class MotherProcessorTest {
                                         Map.of(),
                                         new SubClass("field", "field2"),
                                         new SubClass("field", "field2"),
+                                        EnumClass.VALUE2,
                                         EnumClass.VALUE2
                                 )
                         );
@@ -84,7 +86,8 @@ class MotherProcessorTest {
                                         Map.of(),
                                         new SubClass("car", "otherValue"),
                                         new SubClass("field", "field2"),
-                                        EnumClass.VALUE1
+                                        EnumClass.VALUE1,
+                                        EnumClass.VALUE2
                                 )
                         );
             }

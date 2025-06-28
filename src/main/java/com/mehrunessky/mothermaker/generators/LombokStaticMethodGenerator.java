@@ -13,6 +13,8 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -38,29 +40,28 @@ public class LombokStaticMethodGenerator {
             if (ElementUtils.fieldIsComplexeClass(enclosedElement)) {
                 Element element = ((DeclaredType) enclosedElement.asType()).asElement();
                 var c = ClassName.get((TypeElement) element);
-                if (element.getKind() == ElementKind.ENUM) {
+                if (element.getKind() != ElementKind.ENUM) {
                     codeBlockBuilder
-                            .add("    .$N($T.values()[0])\n",
+                            .add("    .$N($N.build())\n",
                                     enclosedElement.getSimpleName().toString(),
-                                    c
+                                    enclosedElement.getSimpleName().toString()
                             );
-                } else {
-                    codeBlockBuilder
-                            .add("    .$N($T.create().build())\n",
-                                    enclosedElement.getSimpleName().toString(),
-                                    ClassName.get(c.packageName(), c.simpleName() + "Mother")
-                            );
+                    continue;
                 }
-                continue;
             }
             var data = DataProvider.getData(
                     FieldElementWrapper.of(enclosedElement)
             );
-            data.ifPresent(tuple -> codeBlockBuilder
-                    .add(tuple.statement(),
-                            enclosedElement.getSimpleName().toString(),
-                            tuple.object()
-                    ));
+            data.ifPresent(tuple -> {
+                var l = new ArrayList<>();
+                l.add(enclosedElement.getSimpleName().toString());
+                l.addAll(Arrays.asList(tuple.object()));
+
+                codeBlockBuilder
+                        .add(tuple.statement(),
+                                l.toArray(Object[]::new)
+                        );
+            });
         }
 
         var jsp = typeElementWrapper

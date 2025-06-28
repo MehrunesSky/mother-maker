@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
 
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.List;
@@ -47,6 +48,10 @@ public class TypeElementWrapper {
 
     public ClassName getLombokBuilderClassName() {
         return getClassName().nestedClass(getClassName().simpleName() + "Builder");
+    }
+
+    public boolean isEnum() {
+        return typeElement.getKind() == ElementKind.ENUM;
     }
 
     public ClassName getMotherClassName() {

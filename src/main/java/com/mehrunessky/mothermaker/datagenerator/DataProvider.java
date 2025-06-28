@@ -11,8 +11,9 @@ public class DataProvider {
 
     private static final List<GetData> GENERATORS = List.of(
             CollectionGenerator.INSTANCE,
-            CollectionGenerator.INSTANCE,
-            StringGenerator.INSTANCE
+            EnumGenerator.INSTANCE,
+            StringGenerator.INSTANCE,
+            DataGenerator.INSTANCE
     );
 
     public static Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
