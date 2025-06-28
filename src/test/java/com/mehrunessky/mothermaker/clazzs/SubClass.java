@@ -15,5 +15,6 @@ public class SubClass {
 
     private String field;
 
+    @Mother.Default(group = "One", value = "crazy")
     private String field2;
 }

@@ -15,12 +15,9 @@ public class StringGenerator implements GetData {
 
     @Override
     public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
-        String value;
-        if (fieldElementWrapper.hasDefaultValue()) {
-            value = fieldElementWrapper.getValueForGroup(group);
-        } else {
-            value = fieldElementWrapper.getFieldName();
-        }
+        String value = Optional
+                .ofNullable(fieldElementWrapper.getValueForGroup(group))
+                .orElse(fieldElementWrapper.getFieldName());
         return Optional.of(Tuple.of(DEFAULT_STATEMENT, value));
     }
 

@@ -8,7 +8,9 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -29,16 +31,23 @@ public class FieldElementWrapper {
 
     public boolean hasDefaultValue() {
         return Optional
-                .<Object>ofNullable(element.getAnnotation(Mother.Default.class))
+                .ofNullable(element.getAnnotation(Mother.Default.class))
+                .filter(a -> a.group().isEmpty())
                 .or(() -> Optional.ofNullable(element
-                        .getAnnotation(Mother.Defaults.class)
-                ))
+                                        .getAnnotation(Mother.Defaults.class)
+                                )
+                                .stream()
+                                .flatMap(a -> Stream.of(a.value()))
+                                .filter(a -> a.group().isEmpty())
+                                .findFirst()
+                )
                 .isPresent();
     }
 
     public String getDefaultValue() {
         return Optional
                 .ofNullable(element.getAnnotation(Mother.Default.class))
+                .filter(a -> a.group().isEmpty())
                 .or(() -> Optional.ofNullable(element
                                         .getAnnotation(Mother.Defaults.class)
                                 )
@@ -52,27 +61,28 @@ public class FieldElementWrapper {
     }
 
     public Set<String> getGroups() {
-        return Optional.ofNullable(element
-                        .getAnnotation(Mother.Defaults.class)
-                ).stream()
-                .flatMap(d -> Stream.of(d.value()))
-                .map(Mother.Default::group)
-                .filter(d -> !d.isEmpty())
-                .collect(Collectors.toSet());
+        return getGroupMap().keySet();
+    }
+
+    public Map<String, String> getGroupMap() {
+        var l = new ArrayList<Mother.Default>();
+        if (element.getAnnotation(Mother.Defaults.class) != null) {
+            l.addAll(Arrays.asList(element.getAnnotation(Mother.Defaults.class).value()));
+        }
+        if (element.getAnnotation(Mother.Default.class) != null) {
+            l.add(element.getAnnotation(Mother.Default.class));
+        }
+        return l
+                .stream()
+                .filter(a -> !a.group().isEmpty())
+                .collect(Collectors.toMap(Mother.Default::group, Mother.Default::value));
     }
 
     public String getValueForGroup(String group) {
         if (group.isEmpty()) {
             return getDefaultValue();
         }
-        return Optional.ofNullable(element
-                        .getAnnotation(Mother.Defaults.class)
-                ).stream()
-                .flatMap(d -> Stream.of(d.value()))
-                .filter(d -> Objects.equals(group, d.group()))
-                .map(Mother.Default::value)
-                .findFirst()
-                .orElse(null);
+        return getGroupMap().get(group);
     }
 
     public boolean isDeclaredType() {
