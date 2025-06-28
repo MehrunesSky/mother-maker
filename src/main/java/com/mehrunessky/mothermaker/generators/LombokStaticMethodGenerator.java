@@ -1,7 +1,6 @@
 package com.mehrunessky.mothermaker.generators;
 
 import com.mehrunessky.mothermaker.datagenerator.DataProvider;
-import com.mehrunessky.mothermaker.utils.ElementUtils;
 import com.mehrunessky.mothermaker.utils.GetFields;
 import com.mehrunessky.mothermaker.utils.StringUtils;
 import com.squareup.javapoet.ClassName;
@@ -10,7 +9,6 @@ import com.squareup.javapoet.MethodSpec;
 import lombok.experimental.UtilityClass;
 
 import javax.lang.model.element.Element;
-import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
@@ -56,18 +54,6 @@ public class LombokStaticMethodGenerator {
         codeBlockBuilder
                 .add("return new $T($T\n    .builder()\n", typeElementWrapper.getMotherClassName(), typeElementWrapper.getClassName());
         for (Element enclosedElement : GetFields.of(typeElementWrapper.getTypeElement()).getFields()) {
-            if (ElementUtils.fieldIsComplexeClass(enclosedElement)) {
-                Element element = ((DeclaredType) enclosedElement.asType()).asElement();
-                var c = ClassName.get((TypeElement) element);
-                if (element.getKind() != ElementKind.ENUM) {
-                    codeBlockBuilder
-                            .add("    .$N($N.build())\n",
-                                    enclosedElement.getSimpleName().toString(),
-                                    enclosedElement.getSimpleName().toString()
-                            );
-                    continue;
-                }
-            }
             var data = DataProvider.getData(
                     group, FieldElementWrapper.of(enclosedElement)
             );

@@ -11,6 +11,7 @@ public class DataProvider {
 
     private static final List<GetData> GENERATORS = List.of(
             CollectionGenerator.INSTANCE,
+            ComplexeClassGenerator.INSTANCE,
             EnumGenerator.INSTANCE,
             StringGenerator.INSTANCE,
             DataGenerator.INSTANCE
