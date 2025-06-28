@@ -46,6 +46,14 @@ public class TypeElementWrapper {
                 .toList();
     }
 
+    public List<FieldElementWrapper> getFields() {
+        return GetFields.of(typeElement)
+                .getFields()
+                .stream()
+                .map(FieldElementWrapper::of)
+                .toList();
+    }
+
     public ClassName getLombokBuilderClassName() {
         return getClassName().nestedClass(getClassName().simpleName() + "Builder");
     }

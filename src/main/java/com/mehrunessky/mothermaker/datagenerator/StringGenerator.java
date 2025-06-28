@@ -14,10 +14,10 @@ public class StringGenerator implements GetData {
     public static final StringGenerator INSTANCE = new StringGenerator();
 
     @Override
-    public Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
+    public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
         String value;
         if (fieldElementWrapper.hasDefaultValue()) {
-            value = fieldElementWrapper.getDefaultValue();
+            value = fieldElementWrapper.getValueForGroup(group);
         } else {
             value = fieldElementWrapper.getFieldName();
         }

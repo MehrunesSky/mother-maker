@@ -16,11 +16,11 @@ public class DataProvider {
             DataGenerator.INSTANCE
     );
 
-    public static Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
+    public static Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
         return GENERATORS
                 .stream()
                 .filter(g -> g.test(fieldElementWrapper))
-                .flatMap(g -> g.getData(fieldElementWrapper).stream())
+                .flatMap(g -> g.getData(group, fieldElementWrapper).stream())
                 .findFirst();
     }
 }

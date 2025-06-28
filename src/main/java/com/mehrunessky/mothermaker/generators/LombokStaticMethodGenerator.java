@@ -15,12 +15,30 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @UtilityClass
 public class LombokStaticMethodGenerator {
 
-    public static MethodSpec generate(TypeElementWrapper typeElementWrapper) {
+    public static List<MethodSpec> generate(TypeElementWrapper typeElementWrapper) {
+        var groups = typeElementWrapper
+                .getFields()
+                .stream()
+                .flatMap(f -> f.getGroups().stream())
+                .filter(g -> !g.isEmpty())
+                .collect(Collectors.toSet());
+
+        List<MethodSpec> methods = new ArrayList<>();
+        methods.add(generate("", typeElementWrapper));
+        groups
+                .stream()
+                .map(g -> generate(g, typeElementWrapper))
+                .forEach(methods::add);
+        return methods;
+    }
+
+    private static MethodSpec generate(String group, TypeElementWrapper typeElementWrapper) {
         var codeBlockBuilder = CodeBlock
                 .builder();
 
@@ -50,7 +68,7 @@ public class LombokStaticMethodGenerator {
                 }
             }
             var data = DataProvider.getData(
-                    FieldElementWrapper.of(enclosedElement)
+                    group, FieldElementWrapper.of(enclosedElement)
             );
             data.ifPresent(tuple -> {
                 var l = new ArrayList<>();
@@ -81,7 +99,7 @@ public class LombokStaticMethodGenerator {
                 .build();
 
         return MethodSpec
-                .methodBuilder("create")
+                .methodBuilder(group.isEmpty() ? "create" : group)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(typeElementWrapper.getMotherClassName())
                 .addCode(codeBlock)

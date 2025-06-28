@@ -8,8 +8,11 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RequiredArgsConstructor(staticName = "of")
 public class FieldElementWrapper {
@@ -25,13 +28,51 @@ public class FieldElementWrapper {
     }
 
     public boolean hasDefaultValue() {
-        return Optional.ofNullable(element.getAnnotation(Mother.Default.class))
+        return Optional
+                .<Object>ofNullable(element.getAnnotation(Mother.Default.class))
+                .or(() -> Optional.ofNullable(element
+                        .getAnnotation(Mother.Defaults.class)
+                ))
                 .isPresent();
     }
 
     public String getDefaultValue() {
-        return Optional.ofNullable(element.getAnnotation(Mother.Default.class))
-                .map(Mother.Default::value).orElse(null);
+        return Optional
+                .ofNullable(element.getAnnotation(Mother.Default.class))
+                .or(() -> Optional.ofNullable(element
+                                        .getAnnotation(Mother.Defaults.class)
+                                )
+                                .stream()
+                                .flatMap(d -> Stream.of(d.value()))
+                                .filter(d -> d.group().isEmpty())
+                                .findFirst()
+                )
+                .map(Mother.Default::value)
+                .orElse(null);
+    }
+
+    public Set<String> getGroups() {
+        return Optional.ofNullable(element
+                        .getAnnotation(Mother.Defaults.class)
+                ).stream()
+                .flatMap(d -> Stream.of(d.value()))
+                .map(Mother.Default::group)
+                .filter(d -> !d.isEmpty())
+                .collect(Collectors.toSet());
+    }
+
+    public String getValueForGroup(String group) {
+        if (group.isEmpty()) {
+            return getDefaultValue();
+        }
+        return Optional.ofNullable(element
+                        .getAnnotation(Mother.Defaults.class)
+                ).stream()
+                .flatMap(d -> Stream.of(d.value()))
+                .filter(d -> Objects.equals(group, d.group()))
+                .map(Mother.Default::value)
+                .findFirst()
+                .orElse(null);
     }
 
     public boolean isDeclaredType() {

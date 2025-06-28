@@ -1,5 +1,6 @@
 package com.mehrunessky.mothermaker;
 
+import com.mehrunessky.mothermaker.clazzs.ClassWithGroupMother;
 import com.mehrunessky.mothermaker.clazzs.EnumClass;
 import com.mehrunessky.mothermaker.clazzs.OtherClass;
 import com.mehrunessky.mothermaker.clazzs.OtherClassMother;
@@ -90,6 +91,11 @@ class MotherProcessorTest {
                                         EnumClass.VALUE2
                                 )
                         );
+            }
+
+            @Test
+            void group() {
+                var group = ClassWithGroupMother.create().build();
             }
         }
 

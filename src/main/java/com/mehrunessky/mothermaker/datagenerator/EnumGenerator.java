@@ -14,7 +14,7 @@ public class EnumGenerator implements GetData {
     public static final EnumGenerator INSTANCE = new EnumGenerator();
 
     @Override
-    public Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
+    public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
         if (fieldElementWrapper.hasDefaultValue()) {
             return Optional.of(
                     Tuple.of(

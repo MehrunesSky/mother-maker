@@ -27,7 +27,7 @@ public final class DataGenerator implements GetData {
         return Optional.of(Tuple.of(DEFAULT_STATEMENT, o));
     }
 
-    public Optional<Tuple> getData(FieldElementWrapper typeElementWrapper) {
+    public Optional<Tuple> getData(String group, FieldElementWrapper typeElementWrapper) {
         if (typeElementWrapper.hasDefaultValue()) {
             return getTupleWithDefaultStatement(typeElementWrapper.getDefaultValue());
         }

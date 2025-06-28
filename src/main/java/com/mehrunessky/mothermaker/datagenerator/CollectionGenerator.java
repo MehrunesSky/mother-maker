@@ -18,7 +18,7 @@ public class CollectionGenerator implements GetData {
     public static final CollectionGenerator INSTANCE = new CollectionGenerator();
 
     @Override
-    public Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper) {
+    public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
         return Optional.ofNullable(
                 switch (fieldElementWrapper.getTypeElementWrapper().getTypeElement().toString()) {
                     case "java.util.List" -> Tuple.of(DEFAULT_STATEMENT, ClassName.get(ArrayList.class));

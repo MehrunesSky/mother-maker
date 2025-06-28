@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface GetData {
 
-    Optional<Tuple> getData(FieldElementWrapper fieldElementWrapper);
+    Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper);
 
     boolean test(FieldElementWrapper fieldElementWrapper);
 

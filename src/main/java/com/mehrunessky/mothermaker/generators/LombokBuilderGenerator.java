@@ -46,7 +46,7 @@ public class LombokBuilderGenerator implements Generator {
 
         classBuilder.addMethod(LombokConstructorGenerator.generate(typeElementWrapper));
 
-        classBuilder.addMethod(LombokStaticMethodGenerator.generate(typeElementWrapper));
+        classBuilder.addMethods(LombokStaticMethodGenerator.generate(typeElementWrapper));
 
         for (Element enclosedElement : GetFields.of(typeElement).withWithoutSubClasses(true).getFields()) {
             String fieldName = enclosedElement.getSimpleName().toString();
