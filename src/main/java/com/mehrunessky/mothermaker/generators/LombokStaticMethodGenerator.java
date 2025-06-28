@@ -3,6 +3,7 @@ package com.mehrunessky.mothermaker.generators;
 import com.mehrunessky.mothermaker.datagenerator.DataProvider;
 import com.mehrunessky.mothermaker.utils.ElementUtils;
 import com.mehrunessky.mothermaker.utils.GetFields;
+import com.mehrunessky.mothermaker.utils.StringUtils;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.MethodSpec;
@@ -99,7 +100,7 @@ public class LombokStaticMethodGenerator {
                 .build();
 
         return MethodSpec
-                .methodBuilder(group.isEmpty() ? "create" : group)
+                .methodBuilder(group.isEmpty() ? "create" : StringUtils.removeCapitalize(group))
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(typeElementWrapper.getMotherClassName())
                 .addCode(codeBlock)

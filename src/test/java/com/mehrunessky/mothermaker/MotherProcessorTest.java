@@ -94,8 +94,21 @@ class MotherProcessorTest {
             }
 
             @Test
-            void group() {
-                var group = ClassWithGroupMother.create().build();
+            void groupDefault() {
+                var group = ClassWithGroupMother
+                        .create()
+                        .build();
+
+                assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValue");
+            }
+
+            @Test
+            void groupCustom() {
+                var group = ClassWithGroupMother
+                        .one()
+                        .build();
+
+                assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValueForGroupOne");
             }
         }
 
