@@ -41,15 +41,28 @@ public class LombokStaticMethodGenerator {
         var codeBlockBuilder = CodeBlock
                 .builder();
 
-        for (var element : typeElementWrapper.getComplexFields()) {
-            var c = ClassName.get((TypeElement) ((DeclaredType) element.asType()).asElement());
-            codeBlockBuilder.addStatement(
-                    "$T $N = $T.create()",
-                    ClassName.get(c.packageName(), c.simpleName() + "Mother"),
-                    element.getSimpleName().toString(),
-                    ClassName.get(c.packageName(), c.simpleName() + "Mother")
-            );
-        }
+        typeElementWrapper
+                .getComplexFields()
+                .forEach(f -> {
+                            var c = ClassName.get((TypeElement) ((DeclaredType) f.asType()).asElement());
+                            codeBlockBuilder.addStatement(
+                                    "$T $N = $T.create()",
+                                    ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                                    f.getSimpleName().toString(),
+                                    ClassName.get(c.packageName(), c.simpleName() + "Mother")
+                            );
+                            f
+                                    .getGroups()
+                                    .forEach(g -> {
+                                        codeBlockBuilder.addStatement(
+                                                "$T $N = $T.create()",
+                                                ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                                                f.getSimpleName().toString() + g,
+                                                ClassName.get(c.packageName(), c.simpleName() + "Mother")
+                                        );
+                                    });
+                        }
+                );
 
         codeBlockBuilder
                 .add("return new $T($T\n    .builder()\n", typeElementWrapper.getMotherClassName(), typeElementWrapper.getClassName());

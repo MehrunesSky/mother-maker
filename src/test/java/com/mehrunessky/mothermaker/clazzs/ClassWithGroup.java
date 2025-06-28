@@ -12,4 +12,8 @@ public class ClassWithGroup {
     @Mother.Default("defaultValue")
     @Mother.Default(group = "One", value = "defaultValueForGroupOne")
     private String fieldFromClassWithGroup;
+
+    //@Mother.Default("create")
+    //@Mother.Default(group = "One", value = "create")
+    //private SubClassMother subClassMother;
 }
