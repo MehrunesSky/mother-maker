@@ -15,6 +15,7 @@ import javax.lang.model.type.DeclaredType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @UtilityClass
@@ -41,7 +42,7 @@ public class LombokStaticMethodGenerator {
         var codeBlockBuilder = CodeBlock
                 .builder();
 
-        typeElementWrapper
+        /*typeElementWrapper
                 .getComplexFields()
                 .forEach(f -> {
                             var c = ClassName.get((TypeElement) ((DeclaredType) f.asType()).asElement());
@@ -55,14 +56,33 @@ public class LombokStaticMethodGenerator {
                                     .getGroups()
                                     .forEach(g -> {
                                         codeBlockBuilder.addStatement(
-                                                "$T $N = $T.create()",
+                                                "$T $N = $T.$N()",
                                                 ClassName.get(c.packageName(), c.simpleName() + "Mother"),
-                                                f.getSimpleName().toString() + g,
-                                                ClassName.get(c.packageName(), c.simpleName() + "Mother")
+                                                f.getSimpleName().toString() + StringUtils.capitalize(f.getValueForGroup(g)),
+                                                ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                                                f.getValueForGroup(g)
                                         );
                                     });
                         }
-                );
+                );*/
+
+        typeElementWrapper
+                .getComplexFields()
+                .forEach(element -> {
+                    var c = ClassName.get((TypeElement) ((DeclaredType) element.asType()).asElement());
+                    var field = Optional
+                            .ofNullable(element.getValueForGroup(group))
+                            .map(StringUtils::capitalize)
+                            .map(s -> element.getFieldName() + s)
+                            .orElse(element.getFieldName() + "Create");
+                    codeBlockBuilder.addStatement(
+                            "$T $N = $T.$N()",
+                            ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                            field,
+                            ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                            Optional.ofNullable(element.getValueForGroup(group)).orElse("create")
+                    );
+                });
 
         codeBlockBuilder
                 .add("return new $T($T\n    .builder()\n", typeElementWrapper.getMotherClassName(), typeElementWrapper.getClassName());
@@ -87,7 +107,11 @@ public class LombokStaticMethodGenerator {
                 .stream()
                 .map(element -> {
                     var c = ClassName.get((TypeElement) ((DeclaredType) element.asType()).asElement());
-                    return "    " + element.getFieldName();
+                    return "    " + Optional
+                            .ofNullable(element.getValueForGroup(group))
+                            .map(StringUtils::capitalize)
+                            .map(s -> element.getFieldName() + s)
+                            .orElse(element.getFieldName() + "Create");
                 })
                 .collect(Collectors.joining(",\n"));
 

@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 @Mother
 public class SubClass {
 
+    @Mother.Default(group = "Two", value = "twoValue")
     private String field;
 
+    @Mother.Default("defaultValue")
     @Mother.Default(group = "One", value = "crazy")
     private String field2;
 }

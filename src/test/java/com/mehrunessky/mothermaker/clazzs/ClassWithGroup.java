@@ -14,6 +14,6 @@ public class ClassWithGroup {
     private String fieldFromClassWithGroup;
 
     @Mother.Default("create")
-    @Mother.Default(group = "One", value = "create")
+    @Mother.Default(group = "Two", value = "one")
     private SubClass subClass;
 }

@@ -36,8 +36,8 @@ class MotherProcessorTest {
                                         List.of(),
                                         Set.of(),
                                         Map.of(),
-                                        new SubClass("field", "field2"),
-                                        new SubClass("field", "field2"),
+                                        new SubClass("field", "defaultValue"),
+                                        new SubClass("field", "defaultValue"),
                                         EnumClass.VALUE1,
                                         EnumClass.VALUE2
                                 )
@@ -60,8 +60,8 @@ class MotherProcessorTest {
                                         List.of(),
                                         Set.of(),
                                         Map.of(),
-                                        new SubClass("field", "field2"),
-                                        new SubClass("field", "field2"),
+                                        new SubClass("field", "defaultValue"),
+                                        new SubClass("field", "defaultValue"),
                                         EnumClass.VALUE2,
                                         EnumClass.VALUE2
                                 )
@@ -86,7 +86,7 @@ class MotherProcessorTest {
                                         Set.of(),
                                         Map.of(),
                                         new SubClass("car", "otherValue"),
-                                        new SubClass("field", "field2"),
+                                        new SubClass("field", "defaultValue"),
                                         EnumClass.VALUE1,
                                         EnumClass.VALUE2
                                 )

@@ -1,6 +1,7 @@
 package com.mehrunessky.mothermaker.datagenerator;
 
 import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
+import com.mehrunessky.mothermaker.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -15,10 +16,12 @@ public class ComplexeClassGenerator implements GetData {
 
     @Override
     public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
+        var method =
+                Optional.ofNullable(fieldElementWrapper.getValueForGroup(group)).orElse("create");
         return Optional.of(
                 Tuple.of(
                         DEFAULT_STATEMENT,
-                        fieldElementWrapper.getSimpleName().toString()
+                        fieldElementWrapper.getSimpleName().toString() + StringUtils.capitalize(method)
                 )
         );
     }
