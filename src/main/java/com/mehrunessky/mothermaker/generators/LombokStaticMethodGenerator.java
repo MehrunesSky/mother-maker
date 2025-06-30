@@ -42,30 +42,6 @@ public class LombokStaticMethodGenerator {
         var codeBlockBuilder = CodeBlock
                 .builder();
 
-        /*typeElementWrapper
-                .getComplexFields()
-                .forEach(f -> {
-                            var c = ClassName.get((TypeElement) ((DeclaredType) f.asType()).asElement());
-                            codeBlockBuilder.addStatement(
-                                    "$T $N = $T.create()",
-                                    ClassName.get(c.packageName(), c.simpleName() + "Mother"),
-                                    f.getSimpleName().toString(),
-                                    ClassName.get(c.packageName(), c.simpleName() + "Mother")
-                            );
-                            f
-                                    .getGroups()
-                                    .forEach(g -> {
-                                        codeBlockBuilder.addStatement(
-                                                "$T $N = $T.$N()",
-                                                ClassName.get(c.packageName(), c.simpleName() + "Mother"),
-                                                f.getSimpleName().toString() + StringUtils.capitalize(f.getValueForGroup(g)),
-                                                ClassName.get(c.packageName(), c.simpleName() + "Mother"),
-                                                f.getValueForGroup(g)
-                                        );
-                                    });
-                        }
-                );*/
-
         typeElementWrapper
                 .getComplexFields()
                 .forEach(element -> {
