@@ -1,6 +1,7 @@
-package com.mehrunessky.mothermaker.datagenerator;
+package com.mehrunessky.mothermaker.datagenerators.generators;
 
-import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
+import com.mehrunessky.mothermaker.datagenerators.Tuple;
+import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import com.squareup.javapoet.ClassName;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.HashSet;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CollectionGenerator implements GetData {
+public class CollectionGenerator implements DataGenerator {
 
     private static final String DEFAULT_STATEMENT = "    .$N(new $T())\n";
 

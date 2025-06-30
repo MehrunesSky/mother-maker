@@ -1,6 +1,8 @@
-package com.mehrunessky.mothermaker.generators;
+package com.mehrunessky.mothermaker.lombok;
 
-import com.mehrunessky.mothermaker.datagenerator.DataProvider;
+import com.mehrunessky.mothermaker.datagenerators.DataProvider;
+import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
+import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
 import com.mehrunessky.mothermaker.utils.GetFields;
 import com.mehrunessky.mothermaker.utils.StringUtils;
 import com.squareup.javapoet.ClassName;

@@ -1,5 +1,7 @@
-package com.mehrunessky.mothermaker.generators;
+package com.mehrunessky.mothermaker.lombok;
 
+import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
+import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
 import com.squareup.javapoet.MethodSpec;
 
 import javax.lang.model.element.Modifier;

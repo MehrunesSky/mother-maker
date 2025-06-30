@@ -1,4 +1,4 @@
-package com.mehrunessky.mothermaker.generators;
+package com.mehrunessky.mothermaker.domain;
 
 import com.mehrunessky.mothermaker.Mother;
 import lombok.RequiredArgsConstructor;

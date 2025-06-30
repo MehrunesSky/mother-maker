@@ -1,17 +1,18 @@
-package com.mehrunessky.mothermaker.datagenerator;
+package com.mehrunessky.mothermaker.datagenerators.generators;
 
-import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
+import com.mehrunessky.mothermaker.datagenerators.Tuple;
+import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DataGenerator implements GetData {
+public class PrimitiveGenerator implements DataGenerator {
 
     private static final String DEFAULT_STATEMENT = "    .$N($L)\n";
 
-    public static final DataGenerator INSTANCE = new DataGenerator();
+    public static final PrimitiveGenerator INSTANCE = new PrimitiveGenerator();
 
     @Override
     public boolean test(FieldElementWrapper fieldElementWrapper) {

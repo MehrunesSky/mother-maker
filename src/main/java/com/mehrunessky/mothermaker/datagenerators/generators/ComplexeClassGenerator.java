@@ -1,6 +1,7 @@
-package com.mehrunessky.mothermaker.datagenerator;
+package com.mehrunessky.mothermaker.datagenerators.generators;
 
-import com.mehrunessky.mothermaker.generators.FieldElementWrapper;
+import com.mehrunessky.mothermaker.datagenerators.Tuple;
+import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import com.mehrunessky.mothermaker.utils.StringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ComplexeClassGenerator implements GetData {
+public class ComplexeClassGenerator implements DataGenerator {
 
     public static final String DEFAULT_STATEMENT = "    .$N($N.build())\n";
 
