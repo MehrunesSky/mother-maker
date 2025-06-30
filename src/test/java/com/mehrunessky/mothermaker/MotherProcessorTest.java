@@ -93,22 +93,35 @@ class MotherProcessorTest {
                         );
             }
 
-            @Test
-            void groupDefault() {
-                var group = ClassWithGroupMother
-                        .create()
-                        .build();
+            @Nested
+            class Group {
 
-                assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValue");
-            }
+                @Test
+                void groupDefault() {
+                    var group = ClassWithGroupMother
+                            .create()
+                            .build();
 
-            @Test
-            void groupCustom() {
-                var group = ClassWithGroupMother
-                        .one()
-                        .build();
+                    assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValue");
+                }
 
-                assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValueForGroupOne");
+                @Test
+                void groupDefaultWhenNoSpecific() {
+                    var group = ClassWithGroupMother
+                            .two()
+                            .build();
+
+                    assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValue");
+                }
+
+                @Test
+                void groupCustom() {
+                    var group = ClassWithGroupMother
+                            .one()
+                            .build();
+
+                    assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValueForGroupOne");
+                }
             }
         }
 
