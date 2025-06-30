@@ -18,5 +18,6 @@ public class SubClass {
 
     @Mother.Default("defaultValue")
     @Mother.Default(group = "One", value = "crazy")
+    @Mother.Default(group = "Two", value = "otherCrazyValue")
     private String field2;
 }

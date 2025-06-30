@@ -103,6 +103,7 @@ class MotherProcessorTest {
                             .build();
 
                     assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValue");
+                    assertThat(group.getValue()).isEqualTo(12);
                 }
 
                 @Test
@@ -112,6 +113,7 @@ class MotherProcessorTest {
                             .build();
 
                     assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValue");
+                    assertThat(group.getValue()).isEqualTo(12);
                 }
 
                 @Test
@@ -121,6 +123,7 @@ class MotherProcessorTest {
                             .build();
 
                     assertThat(group.getFieldFromClassWithGroup()).isEqualTo("defaultValueForGroupOne");
+                    assertThat(group.getValue()).isEqualTo(50);
                 }
             }
         }

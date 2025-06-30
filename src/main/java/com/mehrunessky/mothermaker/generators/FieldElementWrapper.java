@@ -85,6 +85,12 @@ public class FieldElementWrapper {
         return getGroupMap().get(group);
     }
 
+    public String getValueForGroupOrDefault(String group) {
+        return Optional.ofNullable(
+                getValueForGroup(group)
+        ).orElse(getDefaultValue());
+    }
+
     public boolean isDeclaredType() {
         return this.asType().getKind() == TypeKind.DECLARED;
     }

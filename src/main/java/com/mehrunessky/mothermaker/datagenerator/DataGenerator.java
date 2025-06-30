@@ -28,8 +28,9 @@ public final class DataGenerator implements GetData {
     }
 
     public Optional<Tuple> getData(String group, FieldElementWrapper typeElementWrapper) {
-        if (typeElementWrapper.hasDefaultValue()) {
-            return getTupleWithDefaultStatement(typeElementWrapper.getDefaultValue());
+        var defaultValue = typeElementWrapper.getValueForGroupOrDefault(group);
+        if (defaultValue != null) {
+            return getTupleWithDefaultStatement(defaultValue);
         }
         return switch (typeElementWrapper.asType().getKind()) {
             case INT, SHORT -> getTupleWithDefaultStatement(0);
