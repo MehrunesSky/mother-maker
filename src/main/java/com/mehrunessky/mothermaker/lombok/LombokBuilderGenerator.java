@@ -14,8 +14,29 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 
+/**
+ * Generator implementation for Lombok-based classes.
+ * This generator creates a "Mother" class that uses the Lombok builder pattern
+ * to facilitate test data creation for classes annotated with {@code @Mother}.
+ */
 public class LombokBuilderGenerator implements Generator {
 
+    /**
+     * Generates a TypeSpec for a "Mother" class based on the provided TypeElement.
+     * The generated class includes:
+     * <ul>
+     *   <li>A private final builder field</li>
+     *   <li>Fields for complex types</li>
+     *   <li>A private constructor</li>
+     *   <li>Static factory methods for different groups</li>
+     *   <li>"with" methods for field manipulation</li>
+     *   <li>A build method that returns the built object</li>
+     * </ul>
+     *
+     * @param processingEnv The processing environment
+     * @param typeElement   The type element to generate a Mother class for
+     * @return A TypeSpec representing the generated Mother class
+     */
     @Override
     public TypeSpec generate(ProcessingEnvironment processingEnv, TypeElement typeElement) {
         TypeElementWrapper typeElementWrapper = TypeElementWrapper.of(typeElement);

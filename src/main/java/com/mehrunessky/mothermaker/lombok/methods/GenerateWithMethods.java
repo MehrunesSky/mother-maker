@@ -17,26 +17,50 @@ import java.util.function.Function;
 
 import static com.mehrunessky.mothermaker.utils.StringUtils.capitalize;
 
+/**
+ * Utility class for generating "with" methods for Mother classes.
+ * These methods allow for fluent modification of field values in the generated Mother classes.
+ */
 @UtilityClass
 public class GenerateWithMethods {
 
+    /**
+     * Generates a list of "with" methods for a Mother class.
+     * Two types of methods are generated:
+     * <ul>
+     *   <li>Simple "with" methods for regular fields that directly set the value on the builder</li>
+     *   <li>Function-based "with" methods for complex fields that apply a function to the field's Mother object</li>
+     * </ul>
+     *
+     * @param typeElement The type element wrapper for the class
+     * @return A list of MethodSpec objects representing the generated methods
+     */
     public List<MethodSpec> generateWithMethods(TypeElementWrapper typeElement) {
         List<MethodSpec> methods = new ArrayList<>();
+
+        // Generate simple "with" methods for regular fields
         for (Element enclosedElement : GetFields.of(typeElement).withWithoutSubClasses(true).getFields()) {
-            String fieldName = enclosedElement.getSimpleName().toString();
-            TypeMirror fieldType = enclosedElement.asType();
-            methods.add(
-                    MethodSpec
-                            .methodBuilder("with" + capitalize(fieldName))
-                            .addModifiers(Modifier.PUBLIC)
-                            .addParameter(TypeName.get(fieldType), fieldName)
-                            .returns(typeElement.getMotherClassName())
-                            .addStatement("$N.$N($L)", "builder", fieldName, fieldName)
-                            .addStatement("return this")
-                            .build()
-            );
+            try {
+                String fieldName = enclosedElement.getSimpleName().toString();
+                TypeMirror fieldType = enclosedElement.asType();
+
+                methods.add(
+                        MethodSpec
+                                .methodBuilder("with" + capitalize(fieldName))
+                                .addModifiers(Modifier.PUBLIC)
+                                .addParameter(TypeName.get(fieldType), fieldName)
+                                .returns(typeElement.getMotherClassName())
+                                .addStatement("$N.$N($L)", "builder", fieldName, fieldName)
+                                .addStatement("return this")
+                                .build()
+                );
+            } catch (Exception e) {
+                // Skip this field if there's an error processing it
+                // This prevents the entire generation from failing due to one problematic field
+            }
         }
 
+        // Generate function-based "with" methods for complex fields
         for (var enclosedElement : typeElement.getComplexFields()) {
             var parameterFunctionName = enclosedElement.getTypeElementWrapper().getMotherClassName();
             String fieldName = enclosedElement.getSimpleName().toString() + "Function";
