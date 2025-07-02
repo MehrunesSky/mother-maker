@@ -94,6 +94,52 @@ class MotherProcessorTest {
             }
 
             @Nested
+            class Collection {
+
+                @Test
+                void setListCollection() {
+                    var otherClass = OtherClassMother
+                            .create()
+                            .withList(List.of("1", "2", "3"))
+                            .build();
+
+                    assertThat(otherClass.getList()).containsExactly("1", "2", "3");
+                }
+
+                @Test
+                void setNoListCollection() {
+                    var otherClass = OtherClassMother
+                            .create()
+                            .withList(List.of("1", "2", "3"))
+                            .withNoList()
+                            .build();
+
+                    assertThat(otherClass.getList()).isEmpty();
+                }
+
+                @Test
+                void setSetCollection() {
+                    var otherClass = OtherClassMother
+                            .create()
+                            .withSet(Set.of("1", "2", "3"))
+                            .build();
+
+                    assertThat(otherClass.getSet()).containsOnly("1", "2", "3");
+                }
+
+                @Test
+                void setMapCollection() {
+                    var otherClass = OtherClassMother
+                            .create()
+                            .withMap(Map.of("k1", "v1", "k2", "v2"))
+                            .build();
+
+                    assertThat(otherClass.getMap())
+                            .containsExactlyEntriesOf(Map.of("k1", "v1", "k2", "v2"));
+                }
+            }
+
+            @Nested
             class Group {
 
                 @Test

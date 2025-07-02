@@ -16,22 +16,15 @@ repositories {
 }
 
 dependencies {
-    // Use JUnit Jupiter for testing.
-
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation 'com.squareup:javapoet:1.13.0'
-
-    // This dependency is exported to consumers, that is to say found on their compile classpath.
-    api libs.commons.math3
-
-    // This dependency is used internally, and not exposed to consumers on their own compile classpath.
-    implementation libs.guava
     annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    implementation 'com.squareup:javapoet:1.13.0'
     implementation 'org.projectlombok:lombok:1.18.38'
+
     testImplementation libs.junit.jupiter
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
-    testImplementation 'org.projectlombok:lombok:1.18.38'
     testAnnotationProcessor project(':')
+    testImplementation 'org.projectlombok:lombok:1.18.38'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testAnnotationProcessor sourceSets.main.output
     testImplementation 'org.assertj:assertj-core:3.27.3'
 }

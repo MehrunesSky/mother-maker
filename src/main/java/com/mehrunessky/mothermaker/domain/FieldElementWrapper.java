@@ -28,6 +28,7 @@ public class FieldElementWrapper {
 
     /**
      * Gets the TypeElementWrapper for this field's type.
+     *
      * @return The TypeElementWrapper for the field's type
      */
     public TypeElementWrapper getTypeElementWrapper() {
@@ -36,6 +37,7 @@ public class FieldElementWrapper {
 
     /**
      * Gets the simple name of the field.
+     *
      * @return The field name as a string
      */
     public String getFieldName() {
@@ -44,6 +46,7 @@ public class FieldElementWrapper {
 
     /**
      * Finds a default annotation with the specified group.
+     *
      * @param group The group to search for, or empty string for global default
      * @return Optional containing the found annotation, or empty if not found
      */
@@ -52,25 +55,18 @@ public class FieldElementWrapper {
                 .ofNullable(element.getAnnotation(Mother.Default.class))
                 .filter(a -> a.group().equals(group))
                 .or(() -> Optional.ofNullable(element
-                                .getAnnotation(Mother.Defaults.class)
-                        )
-                        .stream()
-                        .flatMap(a -> Stream.of(a.value()))
-                        .filter(a -> a.group().equals(group))
-                        .findFirst()
+                                        .getAnnotation(Mother.Defaults.class)
+                                )
+                                .stream()
+                                .flatMap(a -> Stream.of(a.value()))
+                                .filter(a -> a.group().equals(group))
+                                .findFirst()
                 );
     }
 
     /**
-     * Checks if this field has a global default value.
-     * @return true if a default value is specified, false otherwise
-     */
-    public boolean hasDefaultValue() {
-        return findDefaultAnnotation("").isPresent();
-    }
-
-    /**
      * Gets the global default value for this field.
+     *
      * @return The default value as a string, or null if not specified
      */
     public String getDefaultValue() {
@@ -81,6 +77,7 @@ public class FieldElementWrapper {
 
     /**
      * Gets all groups defined for this field.
+     *
      * @return A set of group names
      */
     public Set<String> getGroups() {
@@ -89,6 +86,7 @@ public class FieldElementWrapper {
 
     /**
      * Gets a map of group names to their default values.
+     *
      * @return A map from group names to default values
      */
     public Map<String, String> getGroupMap() {
@@ -107,6 +105,7 @@ public class FieldElementWrapper {
 
     /**
      * Gets the default value for the specified group.
+     *
      * @param group The group name, or empty string for global default
      * @return The default value for the group, or null if not specified
      */
@@ -119,6 +118,7 @@ public class FieldElementWrapper {
 
     /**
      * Gets the default value for the specified group, or the global default if not found.
+     *
      * @param group The group name
      * @return The group's default value, or the global default, or null if neither exists
      */
@@ -130,6 +130,7 @@ public class FieldElementWrapper {
 
     /**
      * Checks if this field has a declared type.
+     *
      * @return true if the field has a declared type, false otherwise
      */
     public boolean isDeclaredType() {
@@ -138,6 +139,7 @@ public class FieldElementWrapper {
 
     /**
      * Checks if this field is a String.
+     *
      * @return true if the field is a String, false otherwise
      */
     public boolean isStringType() {
@@ -147,11 +149,18 @@ public class FieldElementWrapper {
 
     /**
      * Checks if this field is a collection type (List, Set, or Map).
+     *
      * @return true if the field is a collection, false otherwise
      */
     public boolean isCollectionType() {
         return isDeclaredType() &&
                 Set.of("java.util.List", "java.util.Set", "java.util.Map")
+                        .contains(this.getTypeElementWrapper().getTypeElement().toString());
+    }
+
+    public boolean isList() {
+        return isDeclaredType() &&
+                Set.of("java.util.List")
                         .contains(this.getTypeElementWrapper().getTypeElement().toString());
     }
 }

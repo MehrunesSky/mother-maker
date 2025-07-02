@@ -1,9 +1,9 @@
-package com.mehrunessky.mothermaker.lombok;
+package com.mehrunessky.mothermaker.classgenerators.lombok;
 
 import com.mehrunessky.mothermaker.classgenerators.Generator;
+import com.mehrunessky.mothermaker.classgenerators.lombok.methods.GenerateWithMethods;
 import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
-import com.mehrunessky.mothermaker.lombok.methods.GenerateWithMethods;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;

@@ -1,14 +1,13 @@
-package com.mehrunessky.mothermaker.lombok.methods;
+package com.mehrunessky.mothermaker.classgenerators.lombok.methods;
 
+import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
-import com.mehrunessky.mothermaker.utils.GetFields;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.ParameterizedTypeName;
 import com.squareup.javapoet.TypeName;
 import lombok.experimental.UtilityClass;
 
-import javax.lang.model.element.Element;
 import javax.lang.model.element.Modifier;
 import javax.lang.model.type.TypeMirror;
 import java.util.ArrayList;
@@ -39,27 +38,46 @@ public class GenerateWithMethods {
         List<MethodSpec> methods = new ArrayList<>();
 
         // Generate simple "with" methods for regular fields
-        for (Element enclosedElement : GetFields.of(typeElement).withWithoutSubClasses(true).getFields()) {
-            try {
-                String fieldName = enclosedElement.getSimpleName().toString();
-                TypeMirror fieldType = enclosedElement.asType();
+        for (FieldElementWrapper enclosedElement : typeElement.getPrimitiveFields()) {
+            String fieldName = enclosedElement.getSimpleName().toString();
+            TypeMirror fieldType = enclosedElement.asType();
 
-                methods.add(
-                        MethodSpec
-                                .methodBuilder("with" + capitalize(fieldName))
-                                .addModifiers(Modifier.PUBLIC)
-                                .addParameter(TypeName.get(fieldType), fieldName)
-                                .returns(typeElement.getMotherClassName())
-                                .addStatement("$N.$N($L)", "builder", fieldName, fieldName)
-                                .addStatement("return this")
-                                .build()
-                );
-            } catch (Exception e) {
-                // Skip this field if there's an error processing it
-                // This prevents the entire generation from failing due to one problematic field
+            if (enclosedElement.isCollectionType()) {
+                Class<?> clazz = null;
+                if (enclosedElement.isList()) {
+                    clazz = List.class;
+                }
+                if (clazz != null) {
+                    methods.add(
+                            MethodSpec
+                                    .methodBuilder("withNo" + capitalize(fieldName))
+                                    .addModifiers(Modifier.PUBLIC)
+                                    .returns(typeElement.getMotherClassName())
+                                    .addStatement("$N.$N($T.of())", "builder", fieldName, List.class)
+                                    .addStatement("return this")
+                                    .build()
+                    );
+                }
             }
+
+            methods.add(
+                    MethodSpec
+                            .methodBuilder("with" + capitalize(fieldName))
+                            .addModifiers(Modifier.PUBLIC)
+                            .addParameter(TypeName.get(fieldType), fieldName)
+                            .returns(typeElement.getMotherClassName())
+                            .addStatement("$N.$N($L)", "builder", fieldName, fieldName)
+                            .addStatement("return this")
+                            .build()
+            );
         }
 
+        methods.addAll(generateMethodForComplexFields(typeElement));
+        return methods;
+    }
+
+    private static List<MethodSpec> generateMethodForComplexFields(TypeElementWrapper typeElement) {
+        List<MethodSpec> methods = new ArrayList<>();
         // Generate function-based "with" methods for complex fields
         for (var enclosedElement : typeElement.getComplexFields()) {
             var parameterFunctionName = enclosedElement.getTypeElementWrapper().getMotherClassName();

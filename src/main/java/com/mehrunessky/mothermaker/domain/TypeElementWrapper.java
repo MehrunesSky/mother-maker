@@ -29,7 +29,6 @@ public class TypeElementWrapper {
 
     public List<FieldElementWrapper> getPrimitiveFields() {
         return GetFields.of(typeElement)
-                .withOnlyWithSetter(true)
                 .withWithoutSubClasses(true)
                 .getFields()
                 .stream()

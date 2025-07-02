@@ -1,5 +1,6 @@
-package com.mehrunessky.mothermaker.classgenerators;
+package com.mehrunessky.mothermaker.classgenerators.classic;
 
+import com.mehrunessky.mothermaker.classgenerators.Generator;
 import com.mehrunessky.mothermaker.utils.GetFields;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.FieldSpec;

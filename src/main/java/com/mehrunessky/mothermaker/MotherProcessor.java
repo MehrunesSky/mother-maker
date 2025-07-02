@@ -1,8 +1,8 @@
 package com.mehrunessky.mothermaker;
 
-import com.mehrunessky.mothermaker.classgenerators.ClassicGenerator;
 import com.mehrunessky.mothermaker.classgenerators.Generator;
-import com.mehrunessky.mothermaker.lombok.LombokBuilderGenerator;
+import com.mehrunessky.mothermaker.classgenerators.classic.ClassicGenerator;
+import com.mehrunessky.mothermaker.classgenerators.lombok.LombokBuilderGenerator;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import lombok.Builder;

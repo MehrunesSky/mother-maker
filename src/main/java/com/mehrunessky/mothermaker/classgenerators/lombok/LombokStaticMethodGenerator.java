@@ -1,4 +1,4 @@
-package com.mehrunessky.mothermaker.lombok;
+package com.mehrunessky.mothermaker.classgenerators.lombok;
 
 import com.mehrunessky.mothermaker.datagenerators.DataProvider;
 import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
