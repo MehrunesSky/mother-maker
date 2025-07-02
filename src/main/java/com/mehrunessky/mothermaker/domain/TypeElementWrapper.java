@@ -65,4 +65,10 @@ public class TypeElementWrapper {
     public ClassName getMotherClassName() {
         return getClassNameWithNameModification(s -> s + "Mother");
     }
+
+    public boolean containSetter(String setterName) {
+        return this.getEnclosedElements().stream()
+                .filter(e -> e.getKind() == ElementKind.METHOD)
+                .anyMatch(m -> m.getSimpleName().toString().equals(setterName));
+    }
 }

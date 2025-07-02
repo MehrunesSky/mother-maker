@@ -16,12 +16,13 @@ public class EnumGenerator implements DataGenerator {
 
     @Override
     public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
-        if (fieldElementWrapper.hasDefaultValue()) {
+        String enumValue = fieldElementWrapper.getValueForGroupOrDefault(group);
+        if (enumValue != null) {
             return Optional.of(
                     Tuple.of(
                             "    .$N($T.$N)\n",
                             fieldElementWrapper.getTypeElementWrapper().getClassName(),
-                            fieldElementWrapper.getDefaultValue()
+                            enumValue
                     )
             );
         }

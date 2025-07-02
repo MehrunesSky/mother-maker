@@ -1,6 +1,7 @@
 package com.mehrunessky.mothermaker.utils;
 
 import com.mehrunessky.mothermaker.Mother;
+import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ import static com.mehrunessky.mothermaker.utils.StringUtils.capitalize;
 public class GetFields {
 
     @NonNull
-    private final TypeElement typeElement;
+    private final TypeElementWrapper typeElement;
 
     @Builder.Default
     @With
@@ -35,10 +36,17 @@ public class GetFields {
     @With
     private final boolean withoutSubClasses = false;
 
-    public static GetFields of(TypeElement typeElement) {
+    public static GetFields of(TypeElementWrapper typeElement) {
         return GetFields
                 .builder()
                 .typeElement(typeElement)
+                .build();
+    }
+
+    public static GetFields of(TypeElement typeElement) {
+        return GetFields
+                .builder()
+                .typeElement(TypeElementWrapper.of(typeElement))
                 .build();
     }
 
@@ -56,7 +64,7 @@ public class GetFields {
 
     private boolean classContainSetter(Element field) {
         var setterName = "set" + capitalize(field.getSimpleName().toString());
-        return ClassElementUtils.classContainSetter(typeElement, setterName);
+        return typeElement.containSetter(setterName);
     }
 
     public List<Element> getFields() {
