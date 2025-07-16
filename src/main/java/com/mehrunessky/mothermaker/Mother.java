@@ -22,17 +22,19 @@ public @interface Mother {
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.SOURCE)
     @Repeatable(Defaults.class)
-    public @interface Default {
+    @interface Default {
         /**
          * The group this default value belongs to.
          * When empty, it's considered the global default.
          * When specified, the value will only be used when creating objects with that group.
+         *
          * @return The group name
          */
         String group() default "";
 
         /**
          * The default value for the field.
+         *
          * @return The default value as a string
          */
         String value();
@@ -43,9 +45,10 @@ public @interface Mother {
      */
     @Target(ElementType.FIELD)
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Defaults {
+    @interface Defaults {
         /**
          * The array of Default annotations.
+         *
          * @return Array of Default annotations
          */
         Default[] value();
@@ -58,6 +61,14 @@ public @interface Mother {
      */
     @Target({ElementType.FIELD})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface Ignore {
+    @interface Ignore {
+    }
+
+    @Target({ElementType.FIELD})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface Use {
+        Class<?> value();
+
+        String method() default "create";
     }
 }

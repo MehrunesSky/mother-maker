@@ -78,11 +78,14 @@ public class LombokStaticMethodGenerator {
                             .map(StringUtils::capitalize)
                             .map(s -> element.getFieldName() + s)
                             .orElse(element.getFieldName() + "Create");
+                    ClassName motherClassName = element.containCustomMother() ?
+                            (ClassName) element.getCustomMotherClassName().get() :
+                            element.getTypeElementWrapper().getMotherClassName();
                     codeBlockBuilder.addStatement(
                             "$T $N = $T.$N()",
-                            ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                            motherClassName,
                             field,
-                            ClassName.get(c.packageName(), c.simpleName() + "Mother"),
+                            motherClassName,
                             Optional.ofNullable(element.getValueForGroup(group)).orElse("create")
                     );
                 });
@@ -116,14 +119,11 @@ public class LombokStaticMethodGenerator {
         var complexFieldParams = typeElementWrapper
                 .getComplexFields()
                 .stream()
-                .map(element -> {
-                    var c = ClassName.get((TypeElement) ((DeclaredType) element.asType()).asElement());
-                    return "    " + Optional
-                            .ofNullable(element.getValueForGroup(group))
-                            .map(StringUtils::capitalize)
-                            .map(s -> element.getFieldName() + s)
-                            .orElse(element.getFieldName() + "Create");
-                })
+                .map(element -> "    " + Optional
+                        .ofNullable(element.getValueForGroup(group))
+                        .map(StringUtils::capitalize)
+                        .map(s -> element.getFieldName() + s)
+                        .orElse(element.getFieldName() + "Create"))
                 .collect(Collectors.joining(",\n"));
 
         if (!complexFieldParams.isEmpty()) {

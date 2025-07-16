@@ -1,5 +1,6 @@
 package com.mehrunessky.mothermaker.datagenerators.generators;
 
+import com.mehrunessky.mothermaker.Mother;
 import com.mehrunessky.mothermaker.datagenerators.Tuple;
 import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import com.mehrunessky.mothermaker.utils.StringUtils;
@@ -17,14 +18,17 @@ public class ComplexeClassGenerator implements DataGenerator {
 
     @Override
     public Optional<Tuple> getData(String group, FieldElementWrapper fieldElementWrapper) {
-        var method =
-                Optional.ofNullable(fieldElementWrapper.getValueForGroup(group)).orElse("create");
-        return Optional.of(
-                Tuple.of(
-                        DEFAULT_STATEMENT,
-                        fieldElementWrapper.getSimpleName().toString() + StringUtils.capitalize(method)
-                )
-        );
+        String method;
+        if (fieldElementWrapper.getAnnotation(Mother.Use.class) != null) {
+            method = fieldElementWrapper.getAnnotation(Mother.Use.class).method();
+        } else {
+            method =
+                    Optional.ofNullable(fieldElementWrapper.getValueForGroup(group)).orElse("create");
+        }
+        return Optional.of(Tuple.of(
+                DEFAULT_STATEMENT,
+                fieldElementWrapper.getSimpleName().toString() + StringUtils.capitalize(method)
+        ));
     }
 
     @Override

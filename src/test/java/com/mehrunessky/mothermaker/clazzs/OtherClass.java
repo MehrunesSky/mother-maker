@@ -1,6 +1,7 @@
 package com.mehrunessky.mothermaker.clazzs;
 
 import com.mehrunessky.mothermaker.Mother;
+import com.mehrunessky.mothermaker.clazzs.custom.MoneyCustomMother;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,6 +29,8 @@ public class OtherClass {
     private Map<String, String> map;
     private SubClass aClass;
     private SubClass twoClass;
+    @Mother.Use(MoneyCustomMother.class)
+    private Money money;
     private EnumClass enumClass;
     @Mother.Default("VALUE2")
     private EnumClass enum2;

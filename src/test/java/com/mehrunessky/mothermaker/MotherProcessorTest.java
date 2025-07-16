@@ -2,6 +2,7 @@ package com.mehrunessky.mothermaker;
 
 import com.mehrunessky.mothermaker.clazzs.ClassWithGroupMother;
 import com.mehrunessky.mothermaker.clazzs.EnumClass;
+import com.mehrunessky.mothermaker.clazzs.Money;
 import com.mehrunessky.mothermaker.clazzs.OtherClass;
 import com.mehrunessky.mothermaker.clazzs.OtherClassMother;
 import com.mehrunessky.mothermaker.clazzs.RecordClass;
@@ -38,6 +39,11 @@ class MotherProcessorTest {
                                         Map.of(),
                                         new SubClass("field", "defaultValue"),
                                         new SubClass("field", "defaultValue"),
+                                        Money
+                                                .builder()
+                                                .amount(3)
+                                                .currency("EUR")
+                                                .build(),
                                         EnumClass.VALUE1,
                                         EnumClass.VALUE2
                                 )
@@ -62,6 +68,11 @@ class MotherProcessorTest {
                                         Map.of(),
                                         new SubClass("field", "defaultValue"),
                                         new SubClass("field", "defaultValue"),
+                                        Money
+                                                .builder()
+                                                .amount(3)
+                                                .currency("EUR")
+                                                .build(),
                                         EnumClass.VALUE2,
                                         EnumClass.VALUE2
                                 )
@@ -87,6 +98,11 @@ class MotherProcessorTest {
                                         Map.of(),
                                         new SubClass("car", "otherValue"),
                                         new SubClass("field", "defaultValue"),
+                                        Money
+                                                .builder()
+                                                .amount(3)
+                                                .currency("EUR")
+                                                .build(),
                                         EnumClass.VALUE1,
                                         EnumClass.VALUE2
                                 )

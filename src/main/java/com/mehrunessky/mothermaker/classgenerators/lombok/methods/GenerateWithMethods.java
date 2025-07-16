@@ -80,7 +80,9 @@ public class GenerateWithMethods {
         List<MethodSpec> methods = new ArrayList<>();
         // Generate function-based "with" methods for complex fields
         for (var enclosedElement : typeElement.getComplexFields()) {
-            var parameterFunctionName = enclosedElement.getTypeElementWrapper().getMotherClassName();
+            var parameterFunctionName = enclosedElement.containCustomMother() ?
+                    (ClassName) enclosedElement.getCustomMotherClassName().get() :
+                    enclosedElement.getTypeElementWrapper().getMotherClassName();
             String fieldName = enclosedElement.getSimpleName().toString() + "Function";
 
             methods.add(
