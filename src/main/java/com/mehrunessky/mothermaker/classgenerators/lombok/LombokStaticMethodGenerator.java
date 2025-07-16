@@ -106,7 +106,7 @@ public class LombokStaticMethodGenerator {
                     params.addAll(Arrays.asList(tuple.object()));
 
                     codeBlockBuilder
-                            .add(tuple.statement(),
+                            .add("    .$N(%s)\n".formatted(tuple.statement()),
                                     params.toArray(Object[]::new)
                             );
                 });

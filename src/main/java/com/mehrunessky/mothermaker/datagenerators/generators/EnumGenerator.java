@@ -10,7 +10,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EnumGenerator implements DataGenerator {
 
-    private static final String DEFAULT_STATEMENT = "    .$N($T.values()[0])\n";
+    private static final String DEFAULT_STATEMENT = "$T.values()[0]";
 
     public static final EnumGenerator INSTANCE = new EnumGenerator();
 
@@ -20,7 +20,7 @@ public class EnumGenerator implements DataGenerator {
         if (enumValue != null) {
             return Optional.of(
                     Tuple.of(
-                            "    .$N($T.$N)\n",
+                            "$T.$N",
                             fieldElementWrapper.getTypeElementWrapper().getClassName(),
                             enumValue
                     )

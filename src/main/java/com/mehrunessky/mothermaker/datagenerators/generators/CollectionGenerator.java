@@ -14,7 +14,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CollectionGenerator implements DataGenerator {
 
-    private static final String DEFAULT_STATEMENT = "    .$N(new $T())\n";
+    private static final String DEFAULT_STATEMENT = "new $T()";
 
     public static final CollectionGenerator INSTANCE = new CollectionGenerator();
 

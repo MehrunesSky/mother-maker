@@ -12,7 +12,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ComplexeClassGenerator implements DataGenerator {
 
-    public static final String DEFAULT_STATEMENT = "    .$N($N.build())\n";
+    public static final String DEFAULT_STATEMENT = "$N.build()";
 
     public static final ComplexeClassGenerator INSTANCE = new ComplexeClassGenerator();
 

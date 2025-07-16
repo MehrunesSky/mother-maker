@@ -10,7 +10,7 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class PrimitiveGenerator implements DataGenerator {
 
-    private static final String DEFAULT_STATEMENT = "    .$N($L)\n";
+    private static final String DEFAULT_STATEMENT = "$L";
 
     public static final PrimitiveGenerator INSTANCE = new PrimitiveGenerator();
 
