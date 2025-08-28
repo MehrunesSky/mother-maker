@@ -30,9 +30,7 @@ public class LombokConstructorGenerator {
         // Add parameters for complex fields
         for (var element : typeElementWrapper.getComplexFields()) {
             constructor.addParameter(
-                    element.containCustomMother() ?
-                            element.getCustomMotherClassName().get() :
-                            element.getTypeElementWrapper().getMotherClassName(),
+                    element.getMotherClassName(),
                     element.getFieldName(),
                     Modifier.FINAL
             );

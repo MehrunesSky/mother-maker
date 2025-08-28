@@ -167,11 +167,20 @@ public class FieldElementWrapper {
                         .contains(this.getTypeElementWrapper().getTypeElement().toString());
     }
 
-    public boolean containCustomMother() {
+    private boolean containCustomMother() {
         return this.getAnnotation(Mother.Use.class) != null;
     }
 
-    public Optional<TypeName> getCustomMotherClassName() {
+    public ClassName getMotherClassName() {
+        if (containCustomMother()) {
+            return getCustomMotherClassName()
+                    .map(ClassName.class::cast)
+                    .orElse(getTypeElementWrapper().getMotherClassName());
+        }
+        return getTypeElementWrapper().getMotherClassName();
+    }
+
+    private Optional<TypeName> getCustomMotherClassName() {
         return this
                 .getAnnotationMirrors()
                 .stream()

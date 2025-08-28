@@ -55,9 +55,7 @@ public class LombokBuilderGenerator implements Generator {
                 );
         for (FieldElementWrapper element : typeElementWrapper.getComplexFields()) {
             classBuilder.addField(
-                    element.containCustomMother() ?
-                            element.getCustomMotherClassName().get() :
-                            element.getTypeElementWrapper().getMotherClassName(),
+                    element.getMotherClassName(),
                     element.getSimpleName().toString(),
                     Modifier.PRIVATE
             );

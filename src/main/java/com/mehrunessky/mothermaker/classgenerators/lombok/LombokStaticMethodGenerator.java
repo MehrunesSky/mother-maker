@@ -78,9 +78,7 @@ public class LombokStaticMethodGenerator {
                             .map(StringUtils::capitalize)
                             .map(s -> element.getFieldName() + s)
                             .orElse(element.getFieldName() + "Create");
-                    ClassName motherClassName = element.containCustomMother() ?
-                            (ClassName) element.getCustomMotherClassName().get() :
-                            element.getTypeElementWrapper().getMotherClassName();
+                    ClassName motherClassName = element.getMotherClassName();
                     codeBlockBuilder.addStatement(
                             "$T $N = $T.$N()",
                             motherClassName,
