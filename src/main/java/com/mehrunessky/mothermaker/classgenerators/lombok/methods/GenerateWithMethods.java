@@ -36,6 +36,24 @@ public class GenerateWithMethods {
      */
     public List<MethodSpec> generateWithMethods(TypeElementWrapper typeElement) {
         List<MethodSpec> methods = new ArrayList<>();
+        methods.addAll(generateMethodForSimpleFields(typeElement, false));
+        methods.addAll(generateMethodForComplexFields(typeElement, false));
+        return methods;
+    }
+
+    public List<MethodSpec> generateAbstractWithMethods(TypeElementWrapper typeElement) {
+        List<MethodSpec> methods = new ArrayList<>();
+        methods.addAll(generateMethodForSimpleFields(typeElement, true));
+        methods.addAll(generateMethodForComplexFields(typeElement, true));
+        return methods;
+    }
+
+    private static List<MethodSpec> generateMethodForSimpleFields(
+            TypeElementWrapper typeElement, boolean abstractMethod) {
+        List<MethodSpec> methods = new ArrayList<>();
+        Modifier[] modifiers = abstractMethod ?
+                new Modifier[]{Modifier.PUBLIC, Modifier.ABSTRACT} :
+                new Modifier[]{Modifier.PUBLIC};
 
         // Generate simple "with" methods for regular fields
         for (FieldElementWrapper enclosedElement : typeElement.getPrimitiveFields()) {
@@ -48,50 +66,64 @@ public class GenerateWithMethods {
                     clazz = List.class;
                 }
                 if (clazz != null) {
+                    MethodSpec.Builder builder = MethodSpec
+                            .methodBuilder("withNo" + capitalize(fieldName))
+                            .addModifiers(modifiers)
+                            .returns(typeElement.containExtend() ? typeElement.getInterfaceMotherClassName() : typeElement.getMotherClassName());
+                    if (!abstractMethod) {
+                        builder
+                                .addStatement("$N.$N($T.of())", "builder", fieldName, List.class)
+                                .addStatement("return ($T) this", typeElement.containExtend() ? typeElement.getInterfaceMotherClassName() : typeElement.getMotherClassName());
+                    }
                     methods.add(
-                            MethodSpec
-                                    .methodBuilder("withNo" + capitalize(fieldName))
-                                    .addModifiers(Modifier.PUBLIC)
-                                    .returns(typeElement.getMotherClassName())
-                                    .addStatement("$N.$N($T.of())", "builder", fieldName, List.class)
-                                    .addStatement("return this")
+                            builder
                                     .build()
                     );
                 }
             }
 
+            MethodSpec.Builder builder = MethodSpec
+                    .methodBuilder("with" + capitalize(fieldName))
+                    .addModifiers(modifiers)
+                    .addParameter(TypeName.get(fieldType), fieldName)
+                    .returns(typeElement.containExtend() ? typeElement.getInterfaceMotherClassName() : typeElement.getMotherClassName());
+            if (!abstractMethod) {
+                builder
+                        .addStatement("$N.$N($L)", "builder", fieldName, fieldName)
+                        .addStatement("return ($T) this", typeElement.containExtend() ? typeElement.getInterfaceMotherClassName() : typeElement.getMotherClassName());
+            }
             methods.add(
-                    MethodSpec
-                            .methodBuilder("with" + capitalize(fieldName))
-                            .addModifiers(Modifier.PUBLIC)
-                            .addParameter(TypeName.get(fieldType), fieldName)
-                            .returns(typeElement.getMotherClassName())
-                            .addStatement("$N.$N($L)", "builder", fieldName, fieldName)
-                            .addStatement("return this")
+                    builder
                             .build()
             );
         }
-
-        methods.addAll(generateMethodForComplexFields(typeElement));
         return methods;
     }
 
-    private static List<MethodSpec> generateMethodForComplexFields(TypeElementWrapper typeElement) {
+    private static List<MethodSpec> generateMethodForComplexFields(
+            TypeElementWrapper typeElement, boolean abstractMethod) {
         List<MethodSpec> methods = new ArrayList<>();
+        Modifier[] modifiers = abstractMethod ?
+                new Modifier[]{Modifier.PUBLIC, Modifier.ABSTRACT} :
+                new Modifier[]{Modifier.PUBLIC};
         // Generate function-based "with" methods for complex fields
         for (var enclosedElement : typeElement.getComplexFields()) {
             var parameterFunctionName = enclosedElement.getMotherClassName();
             String fieldName = enclosedElement.getSimpleName().toString() + "Function";
 
+            MethodSpec.Builder builder = MethodSpec
+                    .methodBuilder("with" + capitalize(enclosedElement.getSimpleName().toString()))
+                    .addModifiers(modifiers)
+                    .addParameter(ParameterizedTypeName.get(ClassName.get(Function.class), parameterFunctionName, parameterFunctionName), fieldName)
+                    .returns(typeElement.containExtend() ? typeElement.getInterfaceMotherClassName() : typeElement.getMotherClassName());
+            if (!abstractMethod) {
+                builder
+                        .addStatement("$N = $N.apply($L)", enclosedElement.getFieldName(), fieldName, enclosedElement.getFieldName())
+                        .addStatement("$N.$N($N.build())", "builder", enclosedElement.getSimpleName().toString(), enclosedElement.getFieldName())
+                        .addStatement("return ($T) this", typeElement.containExtend() ? typeElement.getInterfaceMotherClassName() : typeElement.getMotherClassName());
+            }
             methods.add(
-                    MethodSpec
-                            .methodBuilder("with" + capitalize(enclosedElement.getSimpleName().toString()))
-                            .addModifiers(Modifier.PUBLIC)
-                            .addParameter(ParameterizedTypeName.get(ClassName.get(Function.class), parameterFunctionName, parameterFunctionName), fieldName)
-                            .returns(typeElement.getMotherClassName())
-                            .addStatement("$N = $N.apply($L)", enclosedElement.getFieldName(), fieldName, enclosedElement.getFieldName())
-                            .addStatement("$N.$N($N.build())", "builder", enclosedElement.getSimpleName().toString(), enclosedElement.getFieldName())
-                            .addStatement("return this")
+                    builder
                             .build()
             );
         }

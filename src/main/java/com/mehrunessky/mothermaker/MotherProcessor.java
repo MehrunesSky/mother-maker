@@ -3,6 +3,7 @@ package com.mehrunessky.mothermaker;
 import com.mehrunessky.mothermaker.classgenerators.Generator;
 import com.mehrunessky.mothermaker.classgenerators.classic.ClassicGenerator;
 import com.mehrunessky.mothermaker.classgenerators.lombok.LombokBuilderGenerator;
+import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
 import lombok.Builder;
@@ -44,6 +45,11 @@ public class MotherProcessor extends AbstractProcessor {
 
     private void generateMotherClass(ProcessingEnvironment processingEnvironment, Generator generator, TypeElement typeElement) {
         try {
+            if (TypeElementWrapper.of(typeElement).containExtend()) {
+                JavaFile.builder(ClassName.get(typeElement).packageName(), generator.generateInterface(processingEnvironment, typeElement))
+                        .build()
+                        .writeTo(processingEnv.getFiler());
+            }
             JavaFile.builder(ClassName.get(typeElement).packageName(), generator.generate(processingEnvironment, typeElement))
                     .build()
                     .writeTo(processingEnv.getFiler());

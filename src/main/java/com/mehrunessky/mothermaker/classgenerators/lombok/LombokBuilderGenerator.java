@@ -53,6 +53,9 @@ public class LombokBuilderGenerator implements Generator {
                         Modifier.FINAL,
                         Modifier.PRIVATE
                 );
+        if (typeElementWrapper.containExtend()) {
+            classBuilder.superclass(typeElementWrapper.getExtend().get());
+        }
         for (FieldElementWrapper element : typeElementWrapper.getComplexFields()) {
             classBuilder.addField(
                     element.getMotherClassName(),
@@ -77,6 +80,33 @@ public class LombokBuilderGenerator implements Generator {
                         .addModifiers(Modifier.PUBLIC)
                         .returns(typeElementWrapper.getClassName())
                         .addStatement("return builder.build()")
+                        .build()
+        );
+        return classBuilder.build();
+    }
+
+    @Override
+    public TypeSpec generateInterface(ProcessingEnvironment processingEnv, TypeElement typeElement) {
+        TypeElementWrapper typeElementWrapper = TypeElementWrapper.of(typeElement);
+        var classBuilder = TypeSpec.interfaceBuilder(typeElementWrapper.getInterfaceMotherClassName())
+                .addAnnotation(AnnotationSpec
+                        .builder(ClassName.get(Generated.class))
+                        .addMember("value", "$S", LombokBuilderGenerator.class.getName())
+                        .build()
+                )
+                .addModifiers(Modifier.PUBLIC);
+
+        classBuilder.addMethods(
+                GenerateWithMethods.generateAbstractWithMethods(
+                        typeElementWrapper
+                )
+        );
+
+        classBuilder.addMethod(
+                MethodSpec
+                        .methodBuilder("build")
+                        .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+                        .returns(typeElementWrapper.getClassName())
                         .build()
         );
         return classBuilder.build();

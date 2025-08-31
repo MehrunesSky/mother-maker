@@ -2,6 +2,7 @@ package com.mehrunessky.mothermaker.domain;
 
 import com.mehrunessky.mothermaker.utils.GetFields;
 import com.squareup.javapoet.ClassName;
+import com.squareup.javapoet.TypeName;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Delegate;
@@ -9,7 +10,9 @@ import lombok.experimental.Delegate;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @RequiredArgsConstructor(staticName = "of")
@@ -65,9 +68,29 @@ public class TypeElementWrapper {
         return getClassNameWithNameModification(s -> s + "Mother");
     }
 
+    public ClassName getInterfaceMotherClassName() {
+        return getClassNameWithNameModification(s -> s + "Mother" + "Interface");
+    }
+
     public boolean containSetter(String setterName) {
         return this.getEnclosedElements().stream()
                 .filter(e -> e.getKind() == ElementKind.METHOD)
                 .anyMatch(m -> m.getSimpleName().toString().equals(setterName));
+    }
+
+    public boolean containExtend() {
+        return getExtend().isPresent();
+    }
+
+    public Optional<TypeName> getExtend() {
+        return getAnnotationMirrors()
+                .stream()
+                .filter(el -> el.toString().contains("Mother"))
+                .flatMap(el -> el.getElementValues().entrySet().stream())
+                .filter(el -> el.getKey().getSimpleName().contentEquals("extend"))
+                .map(el -> el.getValue().getValue())
+                .map(el -> (TypeMirror) el)
+                .map(ClassName::get)
+                .findFirst();
     }
 }

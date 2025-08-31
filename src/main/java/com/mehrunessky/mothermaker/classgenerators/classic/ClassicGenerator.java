@@ -61,4 +61,9 @@ public class ClassicGenerator implements Generator {
 
         return classBuilder.build();
     }
+
+    @Override
+    public TypeSpec generateInterface(ProcessingEnvironment processingEnv, TypeElement typeElement) {
+        return null;
+    }
 }

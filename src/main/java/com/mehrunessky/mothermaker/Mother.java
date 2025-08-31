@@ -15,6 +15,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 public @interface Mother {
 
+    Class<?> extend() default Void.class;
+
     /**
      * Annotation to specify default values for fields.
      * Can be used multiple times on the same field with different group values.
