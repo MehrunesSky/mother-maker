@@ -1,6 +1,7 @@
 package com.mehrunessky.mothermaker.lombok.clazzs;
 
 import com.mehrunessky.mothermaker.Mother;
+import com.mehrunessky.mothermaker.lombok.clazzs.groups.SubClass;
 import lombok.Builder;
 import lombok.Data;
 

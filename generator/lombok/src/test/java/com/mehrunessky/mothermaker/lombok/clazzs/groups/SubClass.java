@@ -1,4 +1,4 @@
-package com.mehrunessky.mothermaker.lombok.clazzs;
+package com.mehrunessky.mothermaker.lombok.clazzs.groups;
 
 import com.mehrunessky.mothermaker.Mother;
 import lombok.AllArgsConstructor;
