@@ -1,6 +1,6 @@
-package com.mehrunessky.mothermaker.clazzs.custom;
+package com.mehrunessky.mothermaker.lombok.clazzs.custom;
 
-import com.mehrunessky.mothermaker.clazzs.Money;
+import com.mehrunessky.mothermaker.lombok.clazzs.Money;
 
 public class MoneyCustomMother {
     private final Money.MoneyBuilder builder;

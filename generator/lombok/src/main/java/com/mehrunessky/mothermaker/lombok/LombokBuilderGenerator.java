@@ -1,13 +1,14 @@
-package com.mehrunessky.mothermaker.classgenerators.lombok;
+package com.mehrunessky.mothermaker.lombok;
 
 import com.mehrunessky.mothermaker.classgenerators.Generator;
-import com.mehrunessky.mothermaker.classgenerators.lombok.methods.GenerateWithMethods;
 import com.mehrunessky.mothermaker.domain.FieldElementWrapper;
 import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
+import com.mehrunessky.mothermaker.lombok.methods.GenerateWithMethods;
 import com.squareup.javapoet.AnnotationSpec;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.MethodSpec;
 import com.squareup.javapoet.TypeSpec;
+import lombok.Builder;
 
 import javax.annotation.processing.Generated;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -110,5 +111,15 @@ public class LombokBuilderGenerator implements Generator {
                         .build()
         );
         return classBuilder.build();
+    }
+
+    @Override
+    public int priority() {
+        return 0;
+    }
+
+    @Override
+    public boolean accepts(TypeElement typeElement) {
+        return typeElement.getAnnotation(Builder.class) != null;
     }
 }

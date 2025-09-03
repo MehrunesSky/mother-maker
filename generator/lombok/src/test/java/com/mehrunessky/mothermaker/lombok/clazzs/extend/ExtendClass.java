@@ -1,4 +1,4 @@
-package com.mehrunessky.mothermaker.clazzs.extend;
+package com.mehrunessky.mothermaker.lombok.clazzs.extend;
 
 import com.mehrunessky.mothermaker.Mother;
 import lombok.Builder;

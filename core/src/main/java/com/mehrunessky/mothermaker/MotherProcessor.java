@@ -1,12 +1,9 @@
 package com.mehrunessky.mothermaker;
 
 import com.mehrunessky.mothermaker.classgenerators.Generator;
-import com.mehrunessky.mothermaker.classgenerators.classic.ClassicGenerator;
-import com.mehrunessky.mothermaker.classgenerators.lombok.LombokBuilderGenerator;
 import com.mehrunessky.mothermaker.domain.TypeElementWrapper;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.JavaFile;
-import lombok.Builder;
 
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -19,24 +16,38 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 import java.io.IOException;
+import java.util.Comparator;
+import java.util.ServiceLoader;
 import java.util.Set;
 
 @SupportedAnnotationTypes("com.mehrunessky.mothermaker.Mother")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class MotherProcessor extends AbstractProcessor {
 
-    private static final Generator CLASSIC_GENERATOR = new ClassicGenerator();
-    private static final Generator LOMBOK_GENERATOR = new LombokBuilderGenerator();
-
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (Element element : roundEnv.getElementsAnnotatedWith(Mother.class)) {
             if (element.getKind() == ElementKind.CLASS || element.getKind() == ElementKind.RECORD) {
                 TypeElement typeElement = (TypeElement) element;
-                if (typeElement.getAnnotation(Builder.class) != null) {
-                    generateMotherClass(processingEnv, LOMBOK_GENERATOR, typeElement);
+                var generators = ServiceLoader.load(
+                        Generator.class, Generator.class.getClassLoader()
+                );
+
+                // Find the first generator that accepts the type element
+                var generator = generators
+                        .stream()
+                        .map(ServiceLoader.Provider::get)
+                        .sorted(Comparator.comparing(Generator::priority))
+                        .filter(g -> g.accepts(typeElement))
+                        .findFirst();
+
+                if (generator.isPresent()) {
+                    processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Using generator: " + generator.get().getClass().getName());
+                    generateMotherClass(processingEnv, generator.get(), typeElement);
                 } else {
-                    generateMotherClass(processingEnv, CLASSIC_GENERATOR, typeElement);
+                    processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE,
+                            "No suitable generator found via ServiceLoader for " + typeElement.getQualifiedName() +
+                                    ". Ensure that the Generator implementation is properly registered in META-INF/services.");
                 }
             }
         }

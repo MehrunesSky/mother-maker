@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
 group = 'com.github.mehrunessky.dinedecide'
@@ -9,10 +9,24 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+dependencies {
+    api project(":core")
+    annotationProcessor 'org.projectlombok:lombok:1.18.38'
+    implementation 'com.squareup:javapoet:1.13.0'
+    implementation 'org.projectlombok:lombok:1.18.38'
+
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.38'
+    testAnnotationProcessor project(':generator:lombok')
+    testImplementation libs.junit.jupiter
+    testImplementation 'org.projectlombok:lombok:1.18.38'
+    testImplementation 'org.assertj:assertj-core:3.27.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
 
 test {
     useJUnitPlatform()

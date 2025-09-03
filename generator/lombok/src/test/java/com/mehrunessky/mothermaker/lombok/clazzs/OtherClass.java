@@ -1,7 +1,7 @@
-package com.mehrunessky.mothermaker.clazzs;
+package com.mehrunessky.mothermaker.lombok.clazzs;
 
 import com.mehrunessky.mothermaker.Mother;
-import com.mehrunessky.mothermaker.clazzs.custom.MoneyCustomMother;
+import com.mehrunessky.mothermaker.lombok.clazzs.custom.MoneyCustomMother;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

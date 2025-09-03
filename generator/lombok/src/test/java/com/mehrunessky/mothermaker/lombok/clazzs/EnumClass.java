@@ -1,4 +1,4 @@
-package com.mehrunessky.mothermaker.clazzs;
+package com.mehrunessky.mothermaker.lombok.clazzs;
 
 public enum EnumClass {
     VALUE1,

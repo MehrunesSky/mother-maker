@@ -17,6 +17,9 @@ import static com.mehrunessky.mothermaker.utils.StringUtils.capitalize;
 import static com.mehrunessky.mothermaker.utils.StringUtils.removeCapitalize;
 
 public class ClassicGenerator implements Generator {
+    public ClassicGenerator() {
+    }
+
     @Override
     public TypeSpec generate(ProcessingEnvironment processingEnv, TypeElement typeElement) {
         // ici tu utilises JavaPoet pour créer la classe <Nom>Mother
@@ -65,5 +68,15 @@ public class ClassicGenerator implements Generator {
     @Override
     public TypeSpec generateInterface(ProcessingEnvironment processingEnv, TypeElement typeElement) {
         return null;
+    }
+
+    @Override
+    public int priority() {
+        return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public boolean accepts(TypeElement typeElement) {
+        return false;
     }
 }

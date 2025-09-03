@@ -10,4 +10,8 @@ public interface Generator {
     TypeSpec generate(ProcessingEnvironment processingEnv, TypeElement typeElement);
 
     TypeSpec generateInterface(ProcessingEnvironment processingEnv, TypeElement typeElement);
+
+    int priority();
+
+    boolean accepts(TypeElement typeElement);
 }
